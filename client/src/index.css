@@ -1,0 +1,839 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes stagger-fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+.animate-stagger-1 {
+  animation: stagger-fade-in 0.6s ease-out 0.1s both;
+}
+
+.animate-stagger-2 {
+  animation: stagger-fade-in 0.6s ease-out 0.2s both;
+}
+
+.animate-stagger-3 {
+  animation: stagger-fade-in 0.6s ease-out 0.3s both;
+}
+
+.animate-stagger-4 {
+  animation: stagger-fade-in 0.6s ease-out 0.4s both;
+}
+
+:root {
+  /* Modern Brand Color Palette */
+  --background: hsl(222, 84%, 5%);
+  --foreground: hsl(210, 40%, 98%);
+  --muted: hsl(217, 33%, 8%);
+  --muted-foreground: hsl(215, 25%, 70%);
+  --popover: hsl(222, 84%, 5%);
+  --popover-foreground: hsl(210, 40%, 98%);
+  --card: hsl(222, 84%, 6%);
+  --card-foreground: hsl(210, 40%, 98%);
+  --border: hsl(217, 33%, 15%);
+  --input: hsl(217, 33%, 12%);
+  
+  /* Primary Brand Colors - Digital Empire Orange */
+  --primary: hsl(14, 100%, 56%);
+  --primary-dark: hsl(14, 100%, 46%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  
+  /* Secondary & Accent Colors */
+  --secondary: hsl(14, 100%, 56%);
+  --secondary-foreground: hsl(0, 0%, 100%);
+  --accent: hsl(14, 100%, 66%);
+  --accent-foreground: hsl(0, 0%, 100%);
+  
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(14, 100%, 56%);
+  --radius: 0.75rem;
+  
+  /* Custom Brand Variables */
+  --brand-orange: hsl(14, 100%, 56%);
+  --brand-orange-light: hsl(14, 100%, 66%);
+  --brand-orange-dark: hsl(14, 100%, 46%);
+  --brand-secondary: hsl(14, 100%, 56%);
+  --brand-success: hsl(142, 76%, 36%);
+  --brand-warning: hsl(43, 96%, 56%);
+}
+
+/* Base Typography & Layout */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Modern Typography Scale */
+.text-hero {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.text-section-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.text-large {
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+/* Modern Glassmorphism Effects */
+.glass-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.service-card {
+  background: linear-gradient(135deg, 
+    rgba(99, 102, 241, 0.1) 0%, 
+    rgba(236, 72, 153, 0.05) 100%);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Cal.com embed styling for brand integration */
+#my-cal-inline {
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #1a1a1a;
+}
+
+/* Let Cal.com handle the theming through cssVarsPerTheme */
+#my-cal-inline * {
+  color-scheme: dark;
+}
+
+.service-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow: 
+    0 20px 40px rgba(99, 102, 241, 0.2),
+    0 0 0 1px rgba(99, 102, 241, 0.1);
+}
+
+/* Modern Button Styles */
+.btn-primary {
+  background: linear-gradient(135deg, hsl(238, 82%, 66%) 0%, hsl(238, 82%, 56%) 100%);
+  border: none;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 10px 30px rgba(99, 102, 241, 0.4),
+    0 0 0 1px rgba(99, 102, 241, 0.2);
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-primary:hover::before {
+  left: 100%;
+}
+
+/* Hero Background Pattern */
+.hero-bg {
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(255, 107, 53, 0.2) 0%, transparent 50%);
+}
+
+/* Section Backgrounds */
+.section-gradient {
+  background: linear-gradient(135deg, 
+    rgba(99, 102, 241, 0.05) 0%, 
+    rgba(236, 72, 153, 0.03) 50%,
+    rgba(255, 107, 53, 0.02) 100%);
+}
+
+/* Loading Animation */
+.pulse-ring {
+  animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.33);
+  }
+  40%, 50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.2);
+  }
+}
+
+/* Smooth Animations */
+.fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(222, 84%, 5%);
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(238, 82%, 66%);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(238, 82%, 56%);
+}
+
+/* Enhanced Visual Elements */
+.gradient-mesh {
+  background: 
+    radial-gradient(circle at 25% 25%, rgba(99, 102, 241, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(236, 72, 153, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(255, 107, 53, 0.1) 0%, transparent 50%);
+}
+
+.floating-particle {
+  width: 3px;
+  height: 3px;
+  background: var(--brand-orange);
+  border-radius: 50%;
+  position: absolute;
+  opacity: 0.3;
+}
+
+.tech-grid {
+  background-image: 
+    linear-gradient(rgba(99, 102, 241, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99, 102, 241, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+.glass-button {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.glass-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(99, 102, 241, 0.4);
+  transform: translateY(-2px);
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(99, 102, 241, 0.8);
+  }
+}
+
+/* Improved Card Hover Effects */
+.card-hover {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card-hover:hover {
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(99, 102, 241, 0.2);
+}
+
+/* Modern Input Styling */
+.modern-input {
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 16px 20px;
+  font-size: 16px;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.modern-input:focus {
+  border-color: hsl(238, 82%, 66%);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+  outline: none;
+}
+
+.modern-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Three.js Canvas Optimizations */
+canvas {
+  display: block;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Performance optimizations for 3D animations */
+.three-background {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Enhanced particle glow effects */
+.particle-glow {
+  filter: blur(0.5px) brightness(1.2);
+  opacity: 0.8;
+}
+
+/* Smooth transitions for interactive elements */
+.interactive-element {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+}
+
+.interactive-element:hover {
+  transform: translateY(-2px) scale(1.02);
+  filter: brightness(1.1);
+}
+
+.dark {
+  --background: hsl(0, 0%, 4%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(0, 0%, 8%);
+  --muted-foreground: hsl(0, 0%, 70%);
+  --popover: hsl(0, 0%, 4%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(0, 0%, 6%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(0, 0%, 12%);
+  --input: hsl(0, 0%, 8%);
+  --primary: hsl(16, 100%, 60%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(0, 0%, 8%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(0, 0%, 12%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(16, 100%, 60%);
+  --radius: 0.75rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg); 
+  }
+  50% { 
+    transform: translateY(-20px) rotate(180deg); 
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { 
+    opacity: 0.6; 
+  }
+  50% { 
+    opacity: 1; 
+  }
+}
+
+@layer components {
+  .glass-card {
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+  
+  .dark .glass-card {
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  }
+  
+  /* Mobile menu backdrop-blur - always applied */
+  .mobile-menu-glass {
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+    isolation: isolate;
+    will-change: backdrop-filter;
+  }
+  
+  .glass-button {
+    background: rgba(255, 107, 53, 0.15);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 107, 53, 0.3);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(255, 107, 53, 0.2);
+  }
+  
+  .dark .glass-button {
+    background: rgba(255, 107, 53, 0.2);
+    border: 1px solid rgba(255, 107, 53, 0.4);
+    box-shadow: 0 4px 16px rgba(255, 107, 53, 0.3);
+  }
+  
+  .gradient-mesh {
+    background: 
+      radial-gradient(circle at 20% 80%, rgba(255, 107, 53, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(255, 107, 53, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, rgba(255, 107, 53, 0.05) 0%, transparent 50%);
+  }
+  
+  .floating-particle {
+    @apply absolute w-1 h-1 rounded-full;
+    background: rgba(255, 107, 53, 0.8);
+    box-shadow: 0 0 8px rgba(255, 107, 53, 0.6);
+    animation: float 6s ease-in-out infinite, pulse 2s ease-in-out infinite alternate;
+  }
+
+  .tech-grid {
+    background: 
+      linear-gradient(90deg, rgba(255, 107, 53, 0.03) 1px, transparent 1px),
+      linear-gradient(rgba(255, 107, 53, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .service-card {
+    background: rgba(255, 255, 255, 0.01);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 107, 53, 0.1), transparent);
+    transition: left 0.5s;
+  }
+
+  .service-card:hover::before {
+    left: 100%;
+  }
+
+  .service-card:hover {
+    border-color: rgba(255, 107, 53, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 40px rgba(255, 107, 53, 0.1);
+    transform: translateY(-8px);
+  }
+}
+
+@layer utilities {
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .animate-pulse-glow {
+    animation: pulse-glow 2s infinite;
+  }
+  
+  .animate-slide-up {
+    animation: slide-up 0.6s ease-out;
+  }
+  
+  .animate-fade-in {
+    animation: fade-in 0.8s ease-out;
+  }
+  
+  .animate-scale-in {
+    animation: scale-in 0.5s ease-out;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse-glow {
+  0% { box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(255, 107, 53, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 107, 53, 0); }
+}
+
+@keyframes slide-up {
+  0% { transform: translateY(100px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes scale-in {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Mobile-Optimized Booking Page Styles */
+@layer components {
+  /* Cal.com embed responsive styles */
+  .cal-embed-responsive {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+
+  /* Mobile: Make Cal.com iframe more touch-friendly */
+  @media (max-width: 1024px) {
+    #my-cal-inline {
+      height: 500px !important;
+      min-height: 500px !important;
+    }
+    
+    /* Improve tap targets on mobile */
+    #my-cal-inline button,
+    #my-cal-inline a {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    #my-cal-inline {
+      height: 450px !important;
+      min-height: 450px !important;
+      font-size: 14px;
+    }
+  }
+
+  /* Touch-friendly interactive elements */
+  .touch-manipulation {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Smooth scroll snap for mobile sections */
+  @media (max-width: 1024px) {
+    .booking-section {
+      scroll-snap-type: y proximity;
+      scroll-padding-top: 80px;
+    }
+    
+    .booking-section > * {
+      scroll-snap-align: start;
+    }
+  }
+
+  /* Enhanced mobile buttons */
+  @media (max-width: 768px) {
+    button,
+    .button,
+    [role="button"] {
+      min-height: 44px;
+      padding: 12px 24px;
+    }
+  }
+
+  /* Mobile-optimized accordions */
+  [data-radix-accordion-content] {
+    overflow: hidden;
+  }
+
+  /* Prevent layout shift on mobile */
+  @media (max-width: 1024px) {
+    .glass-card {
+      contain: layout;
+    }
+  }
+
+  /* Optimize animations for mobile performance */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Better mobile spacing */
+  @media (max-width: 640px) {
+    .container {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  }
+
+  /* Sticky button shadow for depth */
+  .sticky-button-shadow {
+    box-shadow: 
+      0 -4px 20px rgba(0, 0, 0, 0.3),
+      0 0 40px rgba(255, 91, 41, 0.3);
+  }
+
+  /* Mobile optimized card spacing */
+  @media (max-width: 1024px) {
+    .card-compact {
+      padding: 1rem;
+    }
+    
+    .card-compact .card-header {
+      padding-bottom: 0.75rem;
+    }
+  }
+}
+
+/* Optimize font sizes for mobile readability */
+@media (max-width: 640px) {
+  h1 {
+    font-size: clamp(1.75rem, 5vw, 3rem);
+    line-height: 1.2;
+  }
+  
+  h2 {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    line-height: 1.3;
+  }
+  
+  p {
+    font-size: clamp(0.875rem, 2vw, 1rem);
+  }
+}
+
+/* Improve mobile link tap targets */
+a {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(255, 91, 41, 0.2);
+}
+
+/* Mobile-optimized footer */
+@media (max-width: 768px) {
+  footer {
+    padding: 2rem 1rem;
+  }
+  
+  footer .grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+/* Hide Scrollbar Utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari, Opera */
+}
+
+/* Better Form Controls on Mobile */
+@media (max-width: 768px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="tel"],
+  input[type="number"],
+  textarea,
+  select {
+    font-size: 16px !important; /* Prevents zoom on iOS */
+    min-height: 44px;
+  }
+}
+
+/* Safe Area Insets for Mobile */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+}
+
+/* Improved Button Hover States for Touch Devices */
+@media (hover: none) {
+  button:hover {
+    transform: none;
+  }
+  
+  button:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Prevent Text Size Adjustment on Mobile */
+@media (max-width: 768px) {
+  html {
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+}
+
+/* Better Focus Visible for Accessibility */
+*:focus-visible {
+  outline: 2px solid hsl(14, 100%, 56%);
+  outline-offset: 2px;
+}
+
+/* Loading State Utilities */
+@keyframes skeleton-loading {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 0px,
+    rgba(255, 255, 255, 0.1) 40px,
+    rgba(255, 255, 255, 0.05) 80px
+  );
+  background-size: 200px 100%;
+  animation: skeleton-loading 1.4s ease-in-out infinite;
+}
+
+/* Card Improvements for Mobile */
+@media (max-width: 640px) {
+  .card-compact-mobile {
+    padding: 1rem;
+  }
+  
+  .card-compact-mobile > * + * {
+    margin-top: 0.75rem;
+  }
+}
+
+/* Responsive Video Embeds */
+.video-responsive {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+}
+
+.video-responsive iframe,
+.video-responsive object,
+.video-responsive embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Smooth Scroll Behavior with Reduced Motion Support */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  body {
+    background: white;
+    color: black;
+  }
+}

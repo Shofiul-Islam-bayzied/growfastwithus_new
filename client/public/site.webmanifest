@@ -1,0 +1,94 @@
+{
+  "name": "GrowFastWithUs - Business Automation Solutions",
+  "short_name": "GrowFastWithUs",
+  "description": "Automate your business with AI-powered workflows. We design, deploy, and host custom automation solutions for healthcare, real estate, e-commerce, and professional services.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#2A1810",
+  "theme_color": "#FF6B35",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-US",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-32x32.png", 
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo-192x192.png",
+      "sizes": "192x192", 
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png", 
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": [
+    "business",
+    "productivity", 
+    "automation",
+    "ai",
+    "workflow",
+    "saas"
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "GrowFastWithUs Desktop Experience"
+    },
+    {
+      "src": "/screenshot-mobile.png", 
+      "sizes": "375x812",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "GrowFastWithUs Mobile Experience"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Browse Templates",
+      "short_name": "Templates",
+      "description": "Explore our automation templates",
+      "url": "/templates",
+      "icons": [
+        {
+          "src": "/icon-templates.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Book Consultation",
+      "short_name": "Book Now", 
+      "description": "Schedule a free discovery call",
+      "url": "/booking",
+      "icons": [
+        {
+          "src": "/icon-booking.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+} 

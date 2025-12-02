@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DATABASE_URL=${DATABASE_URL:-postgresql://growfast:CHANGE_ME@growfastwithus-db:5432/growfastwithus}
+      - SESSION_SECRET=${SESSION_SECRET:-CHANGE_ME_32_CHARACTER_SECRET}
+      - PGHOST=${PGHOST:-growfastwithus-db}
+      - PGPORT=${PGPORT:-5432}
+      - PGUSER=${PGUSER:-growfast}
+      - PGPASSWORD=${PGPASSWORD:-CHANGE_ME}
+      - PGDATABASE=${PGDATABASE:-growfastwithus}
+    depends_on:
+      - db
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-growfastwithus}
+      - POSTGRES_USER=${POSTGRES_USER:-growfast}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-CHANGE_ME}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U growfast -d growfastwithus"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:

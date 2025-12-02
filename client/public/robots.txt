@@ -1,0 +1,94 @@
+User-agent: *
+Allow: /
+
+# Allow all search engines to crawl all content
+Allow: /templates
+Allow: /booking
+Allow: /privacy-policy
+Allow: /terms-of-service
+Allow: /gdpr
+
+# Disallow admin and sensitive areas
+Disallow: /admin
+Disallow: /admin-login
+Disallow: /api/
+Disallow: /_next/
+Disallow: /server/
+Disallow: /*.json$
+Disallow: /node_modules/
+
+# Allow important files for SEO
+Allow: /robots.txt
+Allow: /sitemap.xml
+Allow: /llm.txt
+Allow: /favicon.ico
+Allow: /*.css
+Allow: /*.js
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.jpeg
+Allow: /*.gif
+Allow: /*.svg
+Allow: /*.webp
+
+# Crawl-delay for different bots
+Crawl-delay: 1
+
+# Special rules for different search engines
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot  
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 2
+
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 2
+
+User-agent: YandexBot
+Allow: /
+Crawl-delay: 2
+
+# AI crawlers for AGO (Artificial General Optimization)
+User-agent: OpenAI-GPTBot
+Allow: /
+Allow: /llm.txt
+Crawl-delay: 1
+
+User-agent: ChatGPT-User
+Allow: /
+Allow: /llm.txt
+
+User-agent: Claude-Web
+Allow: /
+Allow: /llm.txt
+
+User-agent: Anthropic-AI
+Allow: /
+Allow: /llm.txt
+
+User-agent: Google-Extended
+Allow: /
+Allow: /llm.txt
+
+User-agent: Meta-AI
+Allow: /
+Allow: /llm.txt
+
+# Sitemap location
+Sitemap: https://growfastwithus.com/sitemap.xml
+Sitemap: https://growfastwithus.com/sitemap-templates.xml
+Sitemap: https://growfastwithus.com/sitemap-pages.xml
+
+# Host directive
+Host: https://growfastwithus.com 

@@ -1,0 +1,1 @@
+// Clerk authentication removed - no longer in use
