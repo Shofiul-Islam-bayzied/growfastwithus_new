@@ -581,6 +581,7 @@ function AdminSettings() {
       });
       setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
       setShowPasswordSection(false);
+      setIsChangingPassword(false);
     },
     onError: (error: any) => {
       toast({
@@ -588,6 +589,7 @@ function AdminSettings() {
         description: error.response?.data?.error || "Failed to change password",
         variant: "destructive"
       });
+      setIsChangingPassword(false);
     },
   });
 
@@ -619,7 +621,6 @@ function AdminSettings() {
       currentPassword: passwordData.currentPassword,
       newPassword: passwordData.newPassword
     });
-    setIsChangingPassword(false);
   };
 
   return (

@@ -35,7 +35,7 @@ FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
-ENV PORT=3000
+ENV PORT=5000
 
 # Debug environment variables
 RUN echo "Building with NODE_ENV=$NODE_ENV and PORT=$PORT"
@@ -69,6 +69,6 @@ EXPOSE 5000
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:5000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })" || exit 1
+  CMD node -e "const req = require('http').get('http://localhost:5000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) }); req.on('error', () => { process.exit(1) })" || exit 1
 
 CMD ["npm", "start"] 
