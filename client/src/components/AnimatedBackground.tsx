@@ -72,13 +72,6 @@ export function AnimatedBackground({ className = '' }: AnimatedBackgroundProps) 
     const particleSystem = new THREE.Points(particles, particleMaterial);
     scene.add(particleSystem);
 
-    // Create floating geometric shapes - focusing on cubes for mirror effect
-    const geometries = [
-      new THREE.BoxGeometry(1, 1, 1),
-      new THREE.BoxGeometry(1.5, 1.5, 1.5),
-      new THREE.BoxGeometry(0.8, 0.8, 0.8)
-    ];
-
     // Minimal geometric shapes
     const shapes: THREE.Mesh[] = [];
     for (let i = 0; i < 3; i++) {
@@ -194,7 +187,7 @@ export function AnimatedBackground({ className = '' }: AnimatedBackgroundProps) 
         cancelAnimationFrame(animationRef.current);
       }
       
-      if (containerRef.current && renderer.domElement) {
+      if (containerRef.current && renderer.domElement && containerRef.current.contains(renderer.domElement)) {
         containerRef.current.removeChild(renderer.domElement);
       }
       

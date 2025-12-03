@@ -264,53 +264,54 @@ export function InteractiveParticles({ className = '', intensity = 1 }: Interact
       particles.geometry.attributes.position.needsUpdate = true;
       
       // Update connection lines
-      let lineIndex = 0;
-      if (!lines.geometry.attributes.position || !lines.geometry.attributes.lineColor) return;
-      const linePositions = lines.geometry.attributes.position.array as Float32Array;
-      const lineColors = lines.geometry.attributes.lineColor.array as Float32Array;
-      
-      for (let i = 0; i < particleCount; i++) {
-        for (let j = i + 1; j < particleCount; j++) {
-          const i3 = i * 3;
-          const j3 = j * 3;
-          
-          const dx = positions[i3] - positions[j3];
-          const dy = positions[i3 + 1] - positions[j3 + 1];
-          const dz = positions[i3 + 2] - positions[j3 + 2];
-          const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
-          
-          if (distance < 8 && lineIndex < linePositions.length - 6) {
-            // Add line
-            linePositions[lineIndex] = positions[i3];
-            linePositions[lineIndex + 1] = positions[i3 + 1];
-            linePositions[lineIndex + 2] = positions[i3 + 2];
-            linePositions[lineIndex + 3] = positions[j3];
-            linePositions[lineIndex + 4] = positions[j3 + 1];
-            linePositions[lineIndex + 5] = positions[j3 + 2];
+      if (lines.geometry.attributes.position && lines.geometry.attributes.lineColor) {
+        let lineIndex = 0;
+        const linePositions = lines.geometry.attributes.position.array as Float32Array;
+        const lineColors = lines.geometry.attributes.lineColor.array as Float32Array;
+        
+        for (let i = 0; i < particleCount; i++) {
+          for (let j = i + 1; j < particleCount; j++) {
+            const i3 = i * 3;
+            const j3 = j * 3;
             
-            // Set line colors
-            const colorI = colors[i3];
-            const colorJ = colors[j3];
-            lineColors[lineIndex] = colorI;
-            lineColors[lineIndex + 1] = colors[i3 + 1];
-            lineColors[lineIndex + 2] = colors[i3 + 2];
-            lineColors[lineIndex + 3] = colorJ;
-            lineColors[lineIndex + 4] = colors[j3 + 1];
-            lineColors[lineIndex + 5] = colors[j3 + 2];
+            const dx = positions[i3] - positions[j3];
+            const dy = positions[i3 + 1] - positions[j3 + 1];
+            const dz = positions[i3 + 2] - positions[j3 + 2];
+            const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
             
-            lineIndex += 6;
+            if (distance < 8 && lineIndex < linePositions.length - 6) {
+              // Add line
+              linePositions[lineIndex] = positions[i3];
+              linePositions[lineIndex + 1] = positions[i3 + 1];
+              linePositions[lineIndex + 2] = positions[i3 + 2];
+              linePositions[lineIndex + 3] = positions[j3];
+              linePositions[lineIndex + 4] = positions[j3 + 1];
+              linePositions[lineIndex + 5] = positions[j3 + 2];
+              
+              // Set line colors
+              const colorI = colors[i3];
+              const colorJ = colors[j3];
+              lineColors[lineIndex] = colorI;
+              lineColors[lineIndex + 1] = colors[i3 + 1];
+              lineColors[lineIndex + 2] = colors[i3 + 2];
+              lineColors[lineIndex + 3] = colorJ;
+              lineColors[lineIndex + 4] = colors[j3 + 1];
+              lineColors[lineIndex + 5] = colors[j3 + 2];
+              
+              lineIndex += 6;
+            }
           }
         }
+        
+        // Clear remaining lines
+        for (let i = lineIndex; i < linePositions.length; i++) {
+          linePositions[i] = 0;
+          if (i < lineColors.length) lineColors[i] = 0;
+        }
+        
+        lines.geometry.attributes.position.needsUpdate = true;
+        lines.geometry.attributes.lineColor.needsUpdate = true;
       }
-      
-      // Clear remaining lines
-      for (let i = lineIndex; i < linePositions.length; i++) {
-        linePositions[i] = 0;
-        if (i < lineColors.length) lineColors[i] = 0;
-      }
-      
-      lines.geometry.attributes.position.needsUpdate = true;
-      lines.geometry.attributes.lineColor.needsUpdate = true;
       
       // Gentle camera rotation
       particles.rotation.y += 0.001;
@@ -336,7 +337,7 @@ export function InteractiveParticles({ className = '', intensity = 1 }: Interact
         cancelAnimationFrame(animationRef.current);
       }
       
-      if (containerRef.current && renderer.domElement) {
+      if (containerRef.current && renderer.domElement && containerRef.current.contains(renderer.domElement)) {
         containerRef.current.removeChild(renderer.domElement);
       }
       

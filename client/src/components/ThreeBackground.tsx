@@ -274,7 +274,7 @@ export function ThreeBackground({ className = '' }: ThreeBackgroundProps) {
         cancelAnimationFrame(animationRef.current);
       }
       
-      if (containerRef.current && renderer.domElement) {
+      if (containerRef.current && renderer.domElement && containerRef.current.contains(renderer.domElement)) {
         containerRef.current.removeChild(renderer.domElement);
       }
       
