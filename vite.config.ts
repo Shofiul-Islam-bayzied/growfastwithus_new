@@ -29,6 +29,7 @@ export default defineConfig({
     emptyOutDir: true,
     minify: "esbuild",
     sourcemap: false,
+    cssMinify: true,
     rollupOptions: {
       output: {
         manualChunks: {

@@ -103,9 +103,10 @@ function FAQItem({ faq, index }: { faq: { question: string; answer: string }; in
           </button>
           {isOpen && (
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
+              initial={{ opacity: 0, scaleY: 0 }}
+              animate={{ opacity: 1, scaleY: 1 }}
+              exit={{ opacity: 0, scaleY: 0 }}
+              style={{ transformOrigin: "top", willChange: "transform, opacity" }}
               className="px-6 pb-6"
             >
               <p className="text-gray-400 leading-relaxed">{faq.answer}</p>
@@ -351,6 +352,8 @@ export default function Home() {
                   className="h-8 w-auto cursor-pointer hover:opacity-80 transition-opacity"
                   loading="eager"
                   fetchPriority="high"
+                  width="120"
+                  height="32"
                 />
               </Link>
             </div>
@@ -534,6 +537,8 @@ export default function Home() {
                   className="h-8 sm:h-10 w-auto cursor-pointer hover:opacity-80 transition-opacity"
                   loading="eager"
                   fetchPriority="high"
+                  width="120"
+                  height="40"
                 />
               </Link>
               <Badge className="bg-primary text-white px-2 sm:px-3 py-1 text-xs sm:text-sm">AI-Powered</Badge>
@@ -1571,6 +1576,8 @@ export default function Home() {
                   alt="GrowFastWithUs Logo" 
                   className="h-12 sm:h-14 w-auto"
                   loading="lazy"
+                  width="168"
+                  height="56"
                 />
               </div>
               <p className="text-lg text-gray-300 mb-8 max-w-md leading-relaxed">
