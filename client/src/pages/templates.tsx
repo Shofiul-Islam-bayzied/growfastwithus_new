@@ -242,12 +242,8 @@ export default function Templates() {
                         </div>
                       </div>
                       <Link href={`/template/${template.id}`}>
-                        <Button 
-                          className="bg-primary hover:bg-primary/90 text-white w-full sm:w-auto min-h-[44px] text-sm sm:text-base"
-                          aria-label={`Learn more about ${template.title}`}
-                        >
-                          Learn More
-                          <span className="sr-only"> about {template.title}</span>
+                        <Button className="bg-primary hover:bg-primary/90 text-white w-full sm:w-auto min-h-[44px] text-sm sm:text-base">
+                          View {template.title}
                         </Button>
                       </Link>
                     </div>
