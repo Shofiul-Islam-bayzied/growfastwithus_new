@@ -921,7 +921,7 @@ export default function Packages() {
             className="fixed bottom-4 left-4 right-4 z-50 lg:hidden"
           >
             <BookingButton
-              className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white shadow-2xl py-6 text-base font-semibold rounded-full"
+              className="w-full backdrop-blur-xl bg-primary/20 hover:bg-primary/30 border border-primary/40 text-white shadow-2xl py-6 text-base font-semibold rounded-full transition-all"
               calLink="grow-fast-with-us/30min"
             >
               <Sparkles className="w-5 h-5 mr-2" />

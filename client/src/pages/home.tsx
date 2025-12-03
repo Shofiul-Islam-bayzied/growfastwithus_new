@@ -335,7 +335,7 @@ export default function Home() {
             className="fixed bottom-4 left-4 right-4 z-50 lg:hidden"
           >
             <BookingButton 
-              className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white shadow-2xl py-5 text-base font-semibold rounded-full"
+              className="w-full backdrop-blur-xl bg-primary/20 hover:bg-primary/30 border border-primary/40 text-white shadow-2xl py-5 text-base font-semibold rounded-full transition-all"
               calLink="grow-fast-with-us/30min"
             >
               <Sparkles className="w-5 h-5 mr-2" />
@@ -428,7 +428,8 @@ export default function Home() {
                 top: 'calc(4rem + 1rem)',
                 backdropFilter: 'blur(24px)',
                 WebkitBackdropFilter: 'blur(24px)',
-                isolation: 'isolate'
+                isolation: 'isolate',
+                willChange: 'backdrop-filter'
               }}
             >
               <div className="p-6 space-y-1">
@@ -608,13 +609,15 @@ export default function Home() {
         </div>
         
         {/* Scroll Indicator */}
-        <motion.div
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+        <motion.button
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer hover:opacity-80 transition-opacity focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-black rounded-full p-2 touch-manipulation"
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
+          onClick={() => scrollToSection('services')}
+          aria-label="Scroll to services section"
         >
           <ArrowRight className="w-6 h-6 text-white rotate-90" />
-        </motion.div>
+        </motion.button>
       </section>
 
       {/* Services Overview */}
@@ -676,7 +679,8 @@ export default function Home() {
             <p className="text-base sm:text-lg lg:text-xl text-gray-400">We integrate with the platforms you already use</p>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 sm:gap-6 max-w-6xl mx-auto">
+          {/* Desktop Grid */}
+          <div className="hidden md:grid md:grid-cols-4 lg:grid-cols-8 gap-4 sm:gap-6 max-w-6xl mx-auto">
             {[
               { name: "n8n", icon: SiN8N },
               { name: "Zapier", icon: SiZapier },
@@ -704,6 +708,55 @@ export default function Home() {
                 </Card>
               </motion.div>
             ))}
+          </div>
+
+          {/* Mobile Marquee */}
+          <div className="md:hidden overflow-hidden relative w-full">
+            <div className="flex animate-marquee gap-4 will-change-transform">
+              {[
+                { name: "n8n", icon: SiN8N },
+                { name: "Zapier", icon: SiZapier },
+                { name: "Make", icon: SiMake },
+                { name: "Slack", icon: SiSlack },
+                { name: "HubSpot", icon: SiHubspot },
+                { name: "Shopify", icon: SiShopify },
+                { name: "Gmail", icon: SiGmail },
+                { name: "Trello", icon: SiTrello }
+              ].map((tech, index) => (
+                <div key={`${tech.name}-1`} className="group flex-shrink-0 w-20 sm:w-24">
+                  <Card className="glass-card p-3 sm:p-4 hover:border-primary/30 transition-all duration-300 aspect-square flex items-center justify-center">
+                    <CardContent className="p-0 text-center">
+                      <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg flex items-center justify-center mx-auto mb-1.5 sm:mb-2 group-hover:bg-primary/20 transition-colors">
+                        <tech.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-400 group-hover:text-primary transition-colors" />
+                      </div>
+                      <p className="text-[9px] sm:text-[10px] font-medium text-gray-300 group-hover:text-white transition-colors">{tech.name}</p>
+                    </CardContent>
+                  </Card>
+                </div>
+              ))}
+              {/* Duplicate for seamless loop */}
+              {[
+                { name: "n8n", icon: SiN8N },
+                { name: "Zapier", icon: SiZapier },
+                { name: "Make", icon: SiMake },
+                { name: "Slack", icon: SiSlack },
+                { name: "HubSpot", icon: SiHubspot },
+                { name: "Shopify", icon: SiShopify },
+                { name: "Gmail", icon: SiGmail },
+                { name: "Trello", icon: SiTrello }
+              ].map((tech, index) => (
+                <div key={`${tech.name}-2`} className="group flex-shrink-0 w-20 sm:w-24">
+                  <Card className="glass-card p-3 sm:p-4 hover:border-primary/30 transition-all duration-300 aspect-square flex items-center justify-center">
+                    <CardContent className="p-0 text-center">
+                      <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg flex items-center justify-center mx-auto mb-1.5 sm:mb-2 group-hover:bg-primary/20 transition-colors">
+                        <tech.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-400 group-hover:text-primary transition-colors" />
+                      </div>
+                      <p className="text-[9px] sm:text-[10px] font-medium text-gray-300 group-hover:text-white transition-colors">{tech.name}</p>
+                    </CardContent>
+                  </Card>
+                </div>
+              ))}
+            </div>
           </div>
           
           <div className="text-center mt-12">
@@ -751,7 +804,7 @@ export default function Home() {
             className="flex justify-center mb-16 -mt-2"
           >
             <BookingButton 
-              className="bg-primary hover:bg-primary/90 text-white shadow-2xl px-8 py-4 text-base font-semibold rounded-full flex items-center gap-2 transition-all hover:scale-105"
+              className="backdrop-blur-xl bg-primary/20 hover:bg-primary/30 border border-primary/40 text-white shadow-2xl px-8 py-4 text-base font-semibold rounded-full flex items-center gap-2 transition-all hover:scale-105"
               calLink="grow-fast-with-us/30min"
             >
               <Sparkles className="w-5 h-5" />
@@ -947,8 +1000,13 @@ export default function Home() {
                       <div className="flex items-center justify-between">
                         <div className="text-3xl font-bold text-primary">€{template.tiers[0].monthlyFee}/mo</div>
                         <Link href={`/template/${template.id}`}>
-                          <Button variant="outline" className="group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all border-gray-600 text-gray-300">
+                          <Button 
+                            variant="outline" 
+                            className="group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all border-gray-600 text-gray-300"
+                            aria-label={`Learn more about ${template.title}`}
+                          >
                             Learn More
+                            <span className="sr-only"> about {template.title}</span>
                           </Button>
                         </Link>
                       </div>
@@ -1034,7 +1092,7 @@ export default function Home() {
                             onCheckedChange={(checked) =>
                               handlePainPointChange(painPoint, checked as boolean)
                             }
-                            className="h-5 w-5 sm:h-4 sm:w-4"
+                            className="h-3 w-3"
                           />
                           <label htmlFor={painPoint} className="text-sm cursor-pointer text-gray-300 touch-manipulation">
                             {painPoint}

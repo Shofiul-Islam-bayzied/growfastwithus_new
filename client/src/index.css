@@ -449,8 +449,15 @@ canvas {
   .mobile-menu-glass {
     backdrop-filter: blur(24px) !important;
     -webkit-backdrop-filter: blur(24px) !important;
-    isolation: isolate;
+    isolation: isolate !important;
     will-change: backdrop-filter;
+    position: relative;
+  }
+  
+  /* Ensure blur is never overridden - force blur on mobile menu container */
+  .mobile-menu-glass[style] {
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
   }
   
   .glass-button {
@@ -539,6 +546,10 @@ canvas {
   .animate-scale-in {
     animation: scale-in 0.5s ease-out;
   }
+  
+  .animate-marquee {
+    animation: marquee 30s linear infinite;
+  }
 }
 
 @keyframes float {
@@ -565,6 +576,15 @@ canvas {
 @keyframes scale-in {
   0% { transform: scale(0.8); opacity: 0; }
   100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 /* Mobile-Optimized Booking Page Styles */
