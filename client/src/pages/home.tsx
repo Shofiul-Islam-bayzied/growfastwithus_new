@@ -637,6 +637,7 @@ export default function Home() {
                 size="lg" 
                 className="text-white border-white/30 hover:bg-white/10 px-8 py-6 sm:py-3 rounded-lg w-full sm:w-auto text-base sm:text-lg touch-manipulation"
                 onClick={() => scrollToSection('templates')}
+                aria-label="View Templates Section"
               >
                 View Templates
               </Button>
@@ -650,13 +651,15 @@ export default function Home() {
         </div>
         
         {/* Scroll Indicator */}
-        <motion.div
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+        <motion.button
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-full bg-primary/20 hover:bg-primary/30 border border-primary/40 backdrop-blur-sm transition-colors z-10 min-w-[48px] min-h-[48px] flex items-center justify-center"
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
+          onClick={() => scrollToSection('services')}
+          aria-label="Scroll to services section"
         >
-          <ArrowRight className="w-6 h-6 text-white rotate-90" />
-        </motion.div>
+          <ArrowRight className="w-6 h-6 sm:w-7 sm:h-7 text-white rotate-90 flex-shrink-0" />
+        </motion.button>
       </section>
 
       {/* Services Overview */}
@@ -989,8 +992,12 @@ export default function Home() {
                       <div className="flex items-center justify-between">
                         <div className="text-3xl font-bold text-primary">€{template.tiers[0].monthlyFee}/mo</div>
                         <Link href={`/template/${template.id}`}>
-                          <Button variant="outline" className="group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all border-gray-600 text-gray-300">
-                            View {template.title}
+                          <Button 
+                            variant="outline" 
+                            className="group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all border-gray-600 text-gray-300"
+                            aria-label={`View ${template.title}`}
+                          >
+                            Learn More
                           </Button>
                         </Link>
                       </div>
@@ -1380,17 +1387,18 @@ export default function Home() {
       </section>
 
       {/* Floating Action Buttons */}
-      <div className="fixed bottom-8 right-8 flex flex-col gap-4 z-50">
+      <div className="fixed bottom-[90px] right-4 sm:bottom-[90px] sm:right-6 lg:bottom-20 lg:right-8 flex flex-col gap-4 z-50">
         {/* Back to Top Button */}
         <motion.button
-          className="w-12 h-12 bg-primary rounded-full flex items-center justify-center shadow-lg hover:bg-primary/90 transition-all"
+          className="w-12 h-12 bg-primary rounded-full flex items-center justify-center shadow-lg hover:bg-primary/90 transition-all touch-manipulation"
           initial={{ opacity: 0, scale: 0 }}
           animate={{ opacity: scrolled ? 1 : 0, scale: scrolled ? 1 : 0 }}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          aria-label="Back to top"
         >
-          <ArrowUp className="w-6 h-6 text-white" />
+          <ArrowUp className="w-6 h-6 text-white flex-shrink-0 pointer-events-none" strokeWidth={2.5} fill="none" />
         </motion.button>
       </div>
 
