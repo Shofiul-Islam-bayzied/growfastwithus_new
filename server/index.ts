@@ -2,22 +2,38 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import session from 'express-session';
 import { setupSecurityMiddleware } from "./middleware/security";
+import { validateAndExitIfInvalid } from "./utils/env-validation";
+import { logger } from "./utils/logger";
+
+// Validate environment variables at startup
+validateAndExitIfInvalid();
 
 const app = express();
 
 // Setup security middleware FIRST (before CORS to maintain compatibility)
 setupSecurityMiddleware(app);
 
-// CORS Configuration
-const allowedOrigins = [
-  'http://localhost:5000',
-  'http://localhost:3000',
-  'https://growfastwithus.com',
-  'https://www.growfastwithus.com',
-  'https://my-personal-sites-grfwu-main.luup7t.easypanel.host',
-  /\.easypanel\.host$/,
-  /\.easypanel\.io$/
-];
+// CORS Configuration - configurable via environment variable
+const getAllowedOrigins = (): (string | RegExp)[] => {
+  // If ALLOWED_ORIGINS is set, use it (comma-separated list)
+  if (process.env.ALLOWED_ORIGINS) {
+    return process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim());
+  }
+  
+  // Default origins for development and common production domains
+  const defaultOrigins: (string | RegExp)[] = [
+    'http://localhost:5000',
+    'http://localhost:3000',
+    'https://growfastwithus.com',
+    'https://www.growfastwithus.com',
+    /\.easypanel\.host$/,
+    /\.easypanel\.io$/
+  ];
+  
+  return defaultOrigins;
+};
+
+const allowedOrigins = getAllowedOrigins();
 
 app.use((req, res, next) => {
   const origin = req.headers.origin;
@@ -53,8 +69,15 @@ app.use(express.urlencoded({ extended: false, limit: '10mb' })); // Add size lim
 
 // Session middleware - Enhanced for production security
 const isProduction = process.env.NODE_ENV === 'production';
+
+// SESSION_SECRET should be validated by env-validation, but provide fallback for development
+if (isProduction && !process.env.SESSION_SECRET) {
+  console.error('❌ SESSION_SECRET is required in production. This should have been caught by validation.');
+  process.exit(1);
+}
+
 const sessionConfig: session.SessionOptions = {
-  secret: process.env.SESSION_SECRET || 'supersecret',
+  secret: process.env.SESSION_SECRET || 'supersecret', // Fallback only for development
   resave: false,
   saveUninitialized: false,
   name: 'sessionId', // Custom name for security (not default 'connect.sid')
@@ -71,7 +94,7 @@ const sessionConfig: session.SessionOptions = {
 
 // Use PostgreSQL session store in production if standard PostgreSQL connection available
 // Note: Neon serverless uses WebSocket, so connect-pg-simple may not work
-// Falls back to memory store if not available (acceptable for single-instance deployment)
+// IMPORTANT: Memory store will NOT work in multi-instance deployments (sessions won't be shared)
 if (isProduction && process.env.DATABASE_URL && !process.env.DATABASE_URL.includes('neon.tech')) {
   try {
     const pgSession = require('connect-pg-simple')(session);
@@ -86,31 +109,24 @@ if (isProduction && process.env.DATABASE_URL && !process.env.DATABASE_URL.includ
         tableName: 'user_sessions',
         createTableIfMissing: true
       });
-      log('✅ Using PostgreSQL session store');
+      logger.info('✅ Using PostgreSQL session store (sessions will persist across restarts)');
     } else {
-      log('ℹ️  Using memory session store (Neon serverless or pool not available)');
+      logger.warn('⚠️  WARNING: Using memory session store in production. Sessions will be lost on restart and won\'t work in multi-instance deployments.');
+      logger.warn('   Consider using a standard PostgreSQL connection (not Neon serverless) for production.');
     }
   } catch (error) {
-    log('⚠️  Could not setup PostgreSQL session store, using memory store: ' + (error instanceof Error ? error.message : String(error)));
+    logger.error('⚠️  WARNING: Could not setup PostgreSQL session store, using memory store', error);
+    logger.warn('   This is NOT recommended for production multi-instance deployments.');
   }
 } else if (isProduction) {
-  log('ℹ️  Using memory session store (Neon serverless database detected)');
+  logger.warn('⚠️  WARNING: Using memory session store in production (Neon serverless database detected).');
+  logger.warn('   Sessions will be lost on restart and won\'t work in multi-instance deployments.');
+  logger.warn('   For production, consider using a standard PostgreSQL connection with connect-pg-simple.');
 }
 
 app.use(session(sessionConfig));
 
-// Simple logging function
-function log(message: string, source = "express") {
-  const formattedTime = new Date().toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: true,
-  });
-
-  console.log(`${formattedTime} [${source}] ${message}`);
-}
-
+// Request logging middleware
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
@@ -125,16 +141,21 @@ app.use((req, res, next) => {
   res.on("finish", () => {
     const duration = Date.now() - start;
     if (path.startsWith("/api")) {
-      let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
+      const context: Record<string, any> = {
+        method: req.method,
+        path,
+        statusCode: res.statusCode,
+        duration,
+        ip: req.ip
+      };
+      
       if (capturedJsonResponse) {
-        logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
+        // Truncate large responses for logging
+        const responseStr = JSON.stringify(capturedJsonResponse);
+        context.response = responseStr.length > 200 ? responseStr.slice(0, 200) + "…" : responseStr;
       }
 
-      if (logLine.length > 80) {
-        logLine = logLine.slice(0, 79) + "…";
-      }
-
-      log(logLine);
+      logger.request(req.method, path, res.statusCode, duration, context);
     }
   });
 
@@ -144,12 +165,24 @@ app.use((req, res, next) => {
 (async () => {
   const server = await registerRoutes(app);
 
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+  app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
     const message = err.message || "Internal Server Error";
 
-    res.status(status).json({ message });
-    throw err;
+    // Log error with context
+    logger.error('Unhandled error in request', err, {
+      method: req.method,
+      path: req.path,
+      statusCode: status,
+      ip: req.ip
+    });
+
+    // Don't expose internal error details in production
+    const errorMessage = process.env.NODE_ENV === 'production' && status === 500
+      ? "Internal Server Error"
+      : message;
+
+    res.status(status).json({ message: errorMessage });
   });
 
   // importantly only setup vite in development and after
@@ -159,15 +192,15 @@ app.use((req, res, next) => {
   const expressEnv = app.get("env") || 'development';
   const isDevelopment = nodeEnv === "development" || expressEnv === "development";
   
-  log(`Environment check: NODE_ENV=${nodeEnv}, Express env=${expressEnv}, isDevelopment=${isDevelopment}`);
+  logger.info(`Environment check: NODE_ENV=${nodeEnv}, Express env=${expressEnv}, isDevelopment=${isDevelopment}`);
   
   if (isDevelopment) {
-    log("Starting in DEVELOPMENT mode with Vite dev server");
+    logger.info("Starting in DEVELOPMENT mode with Vite dev server");
     // Dynamic import only in development - this won't be bundled by esbuild
     const { setupVite } = await import("./vite");
     await setupVite(app, server);
   } else {
-    log("Starting in PRODUCTION mode with static file serving");
+    logger.info("Starting in PRODUCTION mode with static file serving");
     // Use production module that has no vite dependencies
     const { serveStatic } = await import("./production");
     serveStatic(app);
@@ -182,7 +215,7 @@ app.use((req, res, next) => {
   
   if (isWindows) {
     server.listen(port, () => {
-      log(`serving on port ${port}`);
+      logger.info(`Server listening on port ${port}`, { port, platform: 'windows' });
     });
   } else {
     server.listen({
@@ -190,7 +223,7 @@ app.use((req, res, next) => {
       host: "0.0.0.0",
       reusePort: true,
     }, () => {
-      log(`serving on port ${port}`);
+      logger.info(`Server listening on port ${port}`, { port, platform: 'unix', reusePort: true });
     });
   }
 })();

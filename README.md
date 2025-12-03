@@ -300,14 +300,36 @@ railway deploy
 
 ## 🔧 Environment Variables
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `DATABASE_URL` | PostgreSQL connection string | Yes |
-| `NODE_ENV` | Environment (development/production) | Yes |
-| `PORT` | Server port (default: 5000) | No |
-| `SESSION_SECRET` | Session encryption secret | Yes |
-| `CLERK_PUBLISHABLE_KEY` | Clerk auth public key | No |
-| `CLERK_SECRET_KEY` | Clerk auth secret key | No |
+### Required Variables
+
+| Variable | Description | Required In |
+|----------|-------------|-------------|
+| `DATABASE_URL` | PostgreSQL connection string | All environments |
+| `NODE_ENV` | Environment (`development` or `production`) | All environments |
+| `SESSION_SECRET` | Session encryption secret (min 32 chars) | **Production** |
+| `JWT_SECRET` | JWT signing secret (min 32 chars) | **Production** |
+| `FRONTEND_URL` | Frontend URL for password reset links | **Production** |
+
+### Optional but Recommended
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `PORT` | Server port | `5000` |
+| `SMTP_HOST` | SMTP server hostname | - |
+| `SMTP_USER` | SMTP username | - |
+| `SMTP_PASS` | SMTP password | - |
+| `ALLOWED_ORIGINS` | Comma-separated CORS origins | Defaults provided |
+| `COOKIE_SECURE` | Enable secure cookies (HTTPS) | `false` (set to `true` in production) |
+| `COOKIE_SAME_SITE` | Cookie SameSite policy | `lax` (set to `strict` in production) |
+| `CLERK_PUBLISHABLE_KEY` | Clerk auth public key | - |
+| `CLERK_SECRET_KEY` | Clerk auth secret key | - |
+
+**Security Note:** In production, the application validates that `SESSION_SECRET` and `JWT_SECRET` are at least 32 characters long and not weak/default values. The application will exit if these requirements are not met.
+
+**Generate secure secrets:**
+```bash
+openssl rand -hex 32
+```
 
 ## 📁 Project Structure
 
@@ -363,6 +385,105 @@ For detailed deployment guides and documentation, visit the [docs](docs/) direct
 - Enable HTTPS in production
 - Regular security updates
 - Database backups
+
+## ✅ Production Deployment Checklist
+
+Before deploying to production, ensure the following:
+
+### Critical Security Requirements
+
+- [ ] **Environment Variables Set:**
+  - [ ] `NODE_ENV=production`
+  - [ ] `DATABASE_URL` - Valid PostgreSQL connection string
+  - [ ] `SESSION_SECRET` - At least 32 characters (generate with `openssl rand -hex 32`)
+  - [ ] `JWT_SECRET` - At least 32 characters (generate with `openssl rand -hex 32`)
+  - [ ] `FRONTEND_URL` - Must use HTTPS (e.g., `https://yourdomain.com`)
+
+- [ ] **Secrets Validation:**
+  - [ ] All secrets are strong (not default/weak values)
+  - [ ] No hardcoded credentials in code
+  - [ ] Secrets are stored securely (environment variables, not in code)
+
+- [ ] **SMTP Configuration (Recommended):**
+  - [ ] `SMTP_HOST`, `SMTP_USER`, `SMTP_PASS` set for email features
+  - [ ] Test email sending functionality
+
+- [ ] **CORS Configuration:**
+  - [ ] `ALLOWED_ORIGINS` set if using custom domains
+  - [ ] Only trusted origins are allowed
+
+### Application Configuration
+
+- [ ] **Database:**
+  - [ ] Database migrations run (`npm run db:push`)
+  - [ ] Database connection tested
+  - [ ] Backup strategy in place
+
+- [ ] **Session Store:**
+  - [ ] Using PostgreSQL session store (not memory store) for multi-instance deployments
+  - [ ] Session persistence verified
+
+- [ ] **HTTPS:**
+  - [ ] SSL/TLS certificate configured
+  - [ ] All cookies set to `secure: true` in production
+  - [ ] `COOKIE_SECURE=true` in environment
+
+- [ ] **Health Checks:**
+  - [ ] Health check endpoint working (`/api/health`)
+  - [ ] Monitoring/alerting configured
+
+### Code Quality
+
+- [ ] **Hardcoded Admin Disabled:**
+  - [ ] Hardcoded admin fallback is disabled in production
+  - [ ] All admin users created through proper registration
+
+- [ ] **Error Handling:**
+  - [ ] Error messages don't expose internal details
+  - [ ] Proper error logging in place
+
+- [ ] **Logging:**
+  - [ ] Structured logging configured
+  - [ ] Log aggregation/monitoring set up (optional but recommended)
+
+### Testing
+
+- [ ] **Functionality:**
+  - [ ] All critical features tested
+  - [ ] Admin authentication working
+  - [ ] Email features tested (if configured)
+  - [ ] WordPress integration tested (if configured)
+
+### Deployment
+
+- [ ] **Build:**
+  - [ ] Application builds successfully (`npm run build`)
+  - [ ] No build warnings/errors
+
+- [ ] **Docker (if using):**
+  - [ ] Docker image builds successfully
+  - [ ] Health check configured correctly
+  - [ ] Port configuration matches environment
+
+- [ ] **Monitoring:**
+  - [ ] Application logs accessible
+  - [ ] Error tracking configured (optional)
+  - [ ] Performance monitoring set up (optional)
+
+### Post-Deployment
+
+- [ ] **Verification:**
+  - [ ] Application starts without errors
+  - [ ] Environment validation passes
+  - [ ] All endpoints responding correctly
+  - [ ] Admin panel accessible and functional
+
+- [ ] **Security:**
+  - [ ] Default admin credentials changed
+  - [ ] Strong passwords set for all admin users
+  - [ ] Security headers verified (helmet.js)
+
+**Note:** The application will automatically validate environment variables at startup and exit if critical variables are missing or invalid in production mode.
 
 ## 📊 Monitoring
 

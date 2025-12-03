@@ -4,7 +4,6 @@ import { storage } from "./storage";
 import { insertContactSchema, insertTemplateSchema, insertSiteSettingSchema, insertEmailSettingSchema } from "@shared/schema";
 import { z } from "zod";
 import bcrypt from 'bcryptjs';
-import session from 'express-session';
 import nodemailer from 'nodemailer';
 import jwt from 'jsonwebtoken';
 import authRoutes from './routes/auth';
@@ -18,14 +17,6 @@ declare module 'express-session' {
     adminUserId?: number;
   }
 }
-
-// Session middleware
-const app = session({
-  secret: process.env.SESSION_SECRET || 'supersecret',
-  resave: false,
-  saveUninitialized: false,
-  cookie: { secure: false, httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }
-});
 
 function requireAdminAuth(req: any, res: any, next: any) {
   if (req.session && req.session.adminUserId) {
@@ -67,14 +58,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const contactData = req.body;
       
-      // Configure email transporter
+      // Configure email transporter - require environment variables
+      if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
+        console.error('SMTP configuration missing. Cannot send contact email.');
+        return res.status(500).json({ error: 'Email service not configured' });
+      }
+
       const transporter = nodemailer.createTransporter({
-        host: process.env.SMTP_HOST || 'smtp-relay.brevo.com',
+        host: process.env.SMTP_HOST,
         port: parseInt(process.env.SMTP_PORT || '587'),
         secure: process.env.SMTP_SECURE === 'true',
         auth: { 
-          user: process.env.SMTP_USER || '90e6e5001@smtp-brevo.com', 
-          pass: process.env.SMTP_PASS || 'OBZJD06dUHnKbWhP' 
+          user: process.env.SMTP_USER, 
+          pass: process.env.SMTP_PASS
         }
       });
 
@@ -1096,16 +1092,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
         }
       } catch (dbError) {
-        // Database check failed, using fallback admin
+        // Database check failed
+        if (process.env.NODE_ENV === 'production') {
+          console.error('Database connection failed in production. Cannot authenticate user.');
+          return res.status(500).json({ error: 'Authentication service unavailable' });
+        }
+        // In development, allow fallback admin
       }
       
-      // Fallback to hardcoded admin for development
-      if (username === 'growfast_admin' && password === 'GrowFast2025!Admin') {
-        req.session.adminUserId = 999; // Special ID for hardcoded admin
-        res.json({ success: true });
-      } else {
-        res.status(401).json({ error: 'Invalid credentials' });
+      // Fallback to hardcoded admin for development ONLY (disabled in production)
+      if (process.env.NODE_ENV !== 'production') {
+        if (username === 'growfast_admin' && password === 'GrowFast2025!Admin') {
+          console.warn('⚠️  Using hardcoded admin credentials. This is only allowed in development!');
+          req.session.adminUserId = 999; // Special ID for hardcoded admin
+          return res.json({ success: true });
+        }
       }
+      
+      // If we get here, authentication failed
+      res.status(401).json({ error: 'Invalid credentials' });
     } catch (error) {
       console.error('Login error:', error);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
@@ -1155,16 +1160,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { email } = req.body;
       const user = await storage.getAdminUserByEmail(email);
       if (!user) return res.status(200).json({ success: true }); // Don't reveal user existence
-      const token = jwt.sign({ id: user.id }, process.env.SESSION_SECRET || 'supersecret', { expiresIn: '1h' });
+      // SESSION_SECRET is validated at startup, but add safety check
+      const jwtSecret = process.env.SESSION_SECRET;
+      if (!jwtSecret) {
+        console.error('SESSION_SECRET not set. Cannot generate password reset token.');
+        return res.status(500).json({ error: 'Server configuration error' });
+      }
+      const token = jwt.sign({ id: user.id }, jwtSecret, { expiresIn: '1h' });
       const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/admin-reset-password?token=${token}`;
-      // Send email using environment variables
+      // Send email using environment variables - require configuration
+      if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
+        console.error('SMTP configuration missing. Cannot send password reset email.');
+        return res.status(500).json({ error: 'Email service not configured' });
+      }
+
       const transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST || 'smtp-relay.brevo.com',
+        host: process.env.SMTP_HOST,
         port: parseInt(process.env.SMTP_PORT || '587'),
         secure: process.env.SMTP_SECURE === 'true',
         auth: { 
-          user: process.env.SMTP_USER || '90e6e5001@smtp-brevo.com', 
-          pass: process.env.SMTP_PASS || 'OBZJD06dUHnKbWhP' 
+          user: process.env.SMTP_USER, 
+          pass: process.env.SMTP_PASS
         }
       });
       await transporter.sendMail({
@@ -1183,7 +1199,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/admin/reset-password', async (req, res) => {
     try {
       const { token, password } = req.body;
-      const payload = jwt.verify(token, process.env.SESSION_SECRET || 'supersecret') as { id: number };
+      // SESSION_SECRET is validated at startup, but add safety check
+      const jwtSecret = process.env.SESSION_SECRET;
+      if (!jwtSecret) {
+        console.error('SESSION_SECRET not set. Cannot verify password reset token.');
+        return res.status(500).json({ error: 'Server configuration error' });
+      }
+      const payload = jwt.verify(token, jwtSecret) as { id: number };
       const user = await storage.getAdminUserById(payload.id);
       if (!user) return res.status(400).json({ error: 'Invalid token' });
       const hash = await bcrypt.hash(password, 10);

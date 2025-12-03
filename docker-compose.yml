@@ -19,7 +19,8 @@ services:
       - db
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"]
+      # Health check uses PORT env var (defaults to 3000 as set in environment)
+      test: ["CMD", "node", "-e", "const port = process.env.PORT || 3000; require('http').get(`http://localhost:${port}/api/health`, (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"]
       interval: 30s
       timeout: 10s
       retries: 3

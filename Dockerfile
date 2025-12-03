@@ -49,8 +49,9 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-# Health check
+# Health check - uses PORT env var (defaults to 3000 as set above)
+# Note: HEALTHCHECK CMD cannot directly use env vars, so we use the PORT value set in ENV
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"
+  CMD node -e "const port = process.env.PORT || 3000; require('http').get(`http://localhost:${port}/api/health`, (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"
 
 CMD ["npm", "start"]
