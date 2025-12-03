@@ -1,33 +1,82 @@
-User-agent: *
+# robots.txt for growfastwithus.com
+# Last updated: 2025-01-27
 
+# Default rules for all crawlers
+User-agent: *
 Disallow: /admin
 Disallow: /admin-login
+Disallow: /admin-register
+Disallow: /admin-forgot-password
+Disallow: /admin-reset-password
 Disallow: /api/
 Disallow: /_next/
 Disallow: /server/
-Disallow: /*.json
+Disallow: /*.json$
 Disallow: /node_modules/
+Disallow: /*?*utm_*
+Disallow: /*?*ref=*
+Allow: /llm.txt
 
-# Standard search engines
+# Google Search Bot - No crawl delay for faster indexing
 User-agent: Googlebot
 Crawl-delay: 0
+Allow: /
 
-User-agent: Bingbot  
+# Google Image Bot
+User-agent: Googlebot-Image
+Crawl-delay: 0
+Allow: /
+
+# Bing Search Bot
+User-agent: Bingbot
 Crawl-delay: 1
+Allow: /
 
-# AI crawlers
+# AI Crawlers - Explicitly allowed for AI training
 User-agent: GPTBot
+Crawl-delay: 1
 Allow: /
 Allow: /llm.txt
+
+User-agent: ChatGPT-User
 Crawl-delay: 1
+Allow: /
+Allow: /llm.txt
+
+User-agent: anthropic-ai
+Crawl-delay: 1
+Allow: /
+Allow: /llm.txt
 
 User-agent: Claude-Web
+Crawl-delay: 1
 Allow: /
 Allow: /llm.txt
 
 User-agent: Google-Extended
+Crawl-delay: 1
 Allow: /
 Allow: /llm.txt
+
+User-agent: CCBot
+Crawl-delay: 1
+Allow: /
+Allow: /llm.txt
+
+User-agent: PerplexityBot
+Crawl-delay: 1
+Allow: /
+Allow: /llm.txt
+
+# Block bad bots and scrapers
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
+
+User-agent: MJ12bot
+Disallow: /
 
 # Sitemaps
 Sitemap: https://growfastwithus.com/sitemap.xml
