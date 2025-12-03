@@ -1,5 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
+import fs from "fs";
+import path from "path";
 import { storage } from "./storage";
 import { insertContactSchema, insertTemplateSchema, insertSiteSettingSchema, insertEmailSettingSchema } from "@shared/schema";
 import { z } from "zod";
@@ -47,6 +49,35 @@ const isAdmin = async (req: any, res: any, next: any) => {
 };
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Serve favicon.ico for Google/SERP crawlers (must be early in the route chain)
+  app.get('/favicon.ico', async (req, res) => {
+    try {
+      // Try production path first (dist/public/)
+      const prodPath = path.resolve(import.meta.dirname, 'public', 'growfastwithus-fav.svg');
+      // Try development path (client/public/)
+      const devPath = path.resolve(import.meta.dirname, '..', 'client', 'public', 'growfastwithus-fav.svg');
+      
+      let faviconPath: string | null = null;
+      if (fs.existsSync(prodPath)) {
+        faviconPath = prodPath;
+      } else if (fs.existsSync(devPath)) {
+        faviconPath = devPath;
+      }
+      
+      if (faviconPath) {
+        res.setHeader('Content-Type', 'image/svg+xml');
+        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+        res.sendFile(faviconPath);
+      } else {
+        // If favicon not found, return 204 No Content (standard for missing favicons)
+        res.status(204).end();
+      }
+    } catch (error) {
+      console.error('Error serving favicon:', error);
+      res.status(204).end();
+    }
+  });
+
   // Add authentication routes
   app.use('/api/auth', authRoutes);
   
