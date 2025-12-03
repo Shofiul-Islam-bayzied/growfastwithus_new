@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef } from "react";
 import { Link } from "wouter";
@@ -11,9 +11,11 @@ import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { AdvancedContactForm } from "@/components/advanced-contact-form";
 import { BookingWidget, BookingButton } from "@/components/BookingWidget";
-import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { CurrencySelector } from "@/components/CurrencySelector";
 import { VoiceAIAddonCard } from "@/components/VoiceAIAddonCard";
+
+// Lazy load heavy Three.js background component
+const AnimatedBackground = lazy(() => import("@/components/AnimatedBackground").then(module => ({ default: module.AnimatedBackground })));
 import { templates, currencies, voiceAIAddons, convertPrice, formatPrice, type Currency, type VoiceAIAddon } from "@/lib/templates";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -135,12 +137,19 @@ export default function Home() {
   const [showStickyCTA, setShowStickyCTA] = useState(false);
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      setHeaderScrolled(window.scrollY > 100);
-      setScrolled(window.scrollY > 300);
-      setShowStickyCTA(window.scrollY > 800);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setHeaderScrolled(window.scrollY > 100);
+          setScrolled(window.scrollY > 300);
+          setShowStickyCTA(window.scrollY > 800);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -341,6 +350,7 @@ export default function Home() {
                   alt="GrowFastWithUs Logo" 
                   className="h-8 w-auto cursor-pointer hover:opacity-80 transition-opacity"
                   loading="eager"
+                  fetchPriority="high"
                 />
               </Link>
             </div>
@@ -469,7 +479,9 @@ export default function Home() {
 
       {/* Hero Section */}
       <section id="home" ref={heroRef} className="min-h-screen bg-black relative overflow-hidden">
-        <AnimatedBackground className="absolute inset-0" />
+        <Suspense fallback={null}>
+          <AnimatedBackground className="absolute inset-0" />
+        </Suspense>
 
         {/* Minimal geometric shapes for visual interest - Hidden on mobile for performance */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none hidden md:block">
@@ -477,26 +489,31 @@ export default function Home() {
             className="absolute top-20 left-10 w-32 h-32 border border-primary/20 rounded-full"
             animate={{ rotate: 360 }}
             transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            style={{ willChange: 'transform' }}
           />
           <motion.div 
             className="absolute top-40 right-20 w-24 h-24 bg-primary/10 rounded-lg"
             animate={{ rotate: -180 }}
             transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+            style={{ willChange: 'transform' }}
           />
           <motion.div 
             className="absolute bottom-40 left-20 w-16 h-16 border-2 border-primary/30"
             animate={{ rotate: 45 }}
             transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+            style={{ willChange: 'transform' }}
           />
           <motion.div 
             className="absolute bottom-32 right-32 w-40 h-40 border border-white/10 rounded-full"
             animate={{ scale: [1, 1.1, 1] }}
             transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            style={{ willChange: 'transform' }}
           />
           <motion.div 
             className="absolute top-60 left-1/2 transform -translate-x-1/2 w-20 h-20 bg-gradient-to-r from-primary/20 to-transparent rounded-full"
             animate={{ y: [0, -20, 0] }}
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            style={{ willChange: 'transform' }}
           />
         </div>
 
@@ -516,6 +533,7 @@ export default function Home() {
                   alt="GrowFastWithUs Logo" 
                   className="h-8 sm:h-10 w-auto cursor-pointer hover:opacity-80 transition-opacity"
                   loading="eager"
+                  fetchPriority="high"
                 />
               </Link>
               <Badge className="bg-primary text-white px-2 sm:px-3 py-1 text-xs sm:text-sm">AI-Powered</Badge>
@@ -1552,7 +1570,7 @@ export default function Home() {
                   src="/logo.png" 
                   alt="GrowFastWithUs Logo" 
                   className="h-12 sm:h-14 w-auto"
-                  loading="eager"
+                  loading="lazy"
                 />
               </div>
               <p className="text-lg text-gray-300 mb-8 max-w-md leading-relaxed">

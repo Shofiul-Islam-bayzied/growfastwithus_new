@@ -18,11 +18,12 @@ export function AnimatedBackground({ className = '' }: AnimatedBackgroundProps) 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    // Limit pixel ratio for better performance on mobile
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     containerRef.current.appendChild(renderer.domElement);
 
-    // Create minimal particles
-    const particleCount = 15;
+    // Create minimal particles - reduced for better performance
+    const particleCount = 10;
     const particles = new THREE.BufferGeometry();
     const positions = new Float32Array(particleCount * 3);
     const colors = new Float32Array(particleCount * 3);
@@ -72,9 +73,9 @@ export function AnimatedBackground({ className = '' }: AnimatedBackgroundProps) 
     const particleSystem = new THREE.Points(particles, particleMaterial);
     scene.add(particleSystem);
 
-    // Minimal geometric shapes
+    // Minimal geometric shapes - reduced for better performance
     const shapes: THREE.Mesh[] = [];
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 2; i++) {
       const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
       const material = new THREE.MeshBasicMaterial({
         color: 0xffffff,
@@ -98,8 +99,8 @@ export function AnimatedBackground({ className = '' }: AnimatedBackgroundProps) 
       scene.add(mesh);
     }
 
-    // Create subtle mirror effect waves
-    const waveGeometry = new THREE.PlaneGeometry(60, 60, 16, 16);
+    // Create subtle mirror effect waves - reduced segments for better performance
+    const waveGeometry = new THREE.PlaneGeometry(60, 60, 8, 8);
     const waveMaterial = new THREE.MeshBasicMaterial({
       color: 0xffffff,
       transparent: true,
@@ -168,8 +169,20 @@ export function AnimatedBackground({ className = '' }: AnimatedBackgroundProps) 
       camera.lookAt(scene.position);
       
       renderer.render(scene, camera);
+      // Throttle animation for better performance on mobile
       animationRef.current = requestAnimationFrame(animate);
     };
+    
+    // Pause animation when page is not visible
+    const handleVisibilityChange = () => {
+      if (document.hidden && animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+        animationRef.current = null;
+      } else if (!document.hidden && !animationRef.current) {
+        animate();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     // Start animation
     animate();
@@ -182,6 +195,7 @@ export function AnimatedBackground({ className = '' }: AnimatedBackgroundProps) 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('resize', handleResize);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);

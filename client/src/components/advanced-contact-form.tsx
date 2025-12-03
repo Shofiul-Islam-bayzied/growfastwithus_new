@@ -83,7 +83,8 @@ export function AdvancedContactForm() {
       queryClient.invalidateQueries({ queryKey: ["/api/contacts"] });
     },
     onError: (error) => {
-      console.error("Submission error:", error);
+      // Don't expose error details that might contain sensitive information
+      console.error("Submission error");
       toast({
         title: "Submission Failed",
         description: "Please try again or contact us directly.",
@@ -127,39 +128,52 @@ export function AdvancedContactForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
       });
-      // Send to Brevo
+      
+      // Send to Brevo (optional - only if API key is configured)
       const brevoApiKey = import.meta.env.VITE_BREVO_API_KEY;
-      if (!brevoApiKey) {
-        console.warn("VITE_BREVO_API_KEY is not set. Brevo contact creation will be skipped.");
-      } else {
-        await fetch("https://api.brevo.com/v3/contacts", {
-          method: "POST",
-          headers: {
-            "accept": "application/json",
-            "api-key": brevoApiKey,
-            "content-type": "application/json"
-          },
-        body: JSON.stringify({
-          email: data.email,
-          attributes: {
-            FIRSTNAME: data.name,
-            COMPANY: data.company,
-            PHONE: data.phone,
-            INDUSTRY: data.industry,
-            BUSINESS_SIZE: data.businessSize,
-            TIME_SPENT: data.timeSpent,
-            MESSAGE: data.message
-          },
-          updateEnabled: true
-        })
-        });
+      if (brevoApiKey) {
+        try {
+          const brevoResponse = await fetch("https://api.brevo.com/v3/contacts", {
+            method: "POST",
+            headers: {
+              "accept": "application/json",
+              "api-key": brevoApiKey,
+              "content-type": "application/json"
+            },
+            body: JSON.stringify({
+              email: data.email,
+              attributes: {
+                FIRSTNAME: data.name,
+                COMPANY: data.company,
+                PHONE: data.phone,
+                INDUSTRY: data.industry,
+                BUSINESS_SIZE: data.businessSize,
+                TIME_SPENT: data.timeSpent,
+                MESSAGE: data.message
+              },
+              updateEnabled: true
+            })
+          });
+          
+          if (!brevoResponse.ok) {
+            // Log error without exposing API key or sensitive data
+            console.error("Brevo API error:", brevoResponse.status, brevoResponse.statusText);
+          }
+        } catch (brevoError) {
+          // Silently fail Brevo integration - don't block form submission
+          // Log error without exposing sensitive information
+          console.error("Brevo integration failed:", brevoError instanceof Error ? brevoError.message : "Unknown error");
+        }
       }
+      
       setIsSubmitted(true);
       toast({
         title: "Application Submitted Successfully!",
         description: "We'll contact you within 24 hours to schedule your discovery call.",
       });
     } catch (error) {
+      // Don't expose error details to user or console
+      console.error("Form submission error");
       toast({
         title: "Submission Failed",
         description: "Please try again or contact us directly.",

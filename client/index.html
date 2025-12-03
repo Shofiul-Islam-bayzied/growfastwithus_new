@@ -52,6 +52,11 @@
     <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/logo.png" as="image" />
     
     <!-- Schema.org JSON-LD Structured Data -->
     <script type="application/ld+json">
@@ -200,6 +205,6 @@
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <!-- This is a replit script which adds a banner on the top of the page when opened in development mode outside the replit environment -->
-    <script type="text/javascript" src="https://replit.com/public/js/replit-dev-banner.js"></script>
+    <script type="text/javascript" src="https://replit.com/public/js/replit-dev-banner.js" defer></script>
   </body>
 </html>
