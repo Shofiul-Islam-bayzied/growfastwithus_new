@@ -8,8 +8,10 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { TrackingCodesProvider } from "@/components/tracking-codes-provider";
 import { ScrollToTop } from "@/components/ScrollToTop";
 
-// Lazy load all pages for code splitting
-const Home = lazy(() => import("@/pages/home"));
+// Home page loads eagerly for fastest initial render
+import Home from "@/pages/home";
+
+// Lazy load other pages for code splitting
 const Services = lazy(() => import("@/pages/services"));
 const Templates = lazy(() => import("@/pages/templates"));
 const Packages = lazy(() => import("@/pages/packages"));
@@ -27,13 +29,9 @@ const AdminForgotPassword = lazy(() => import("@/pages/admin-forgot-password"));
 const AdminResetPassword = lazy(() => import("@/pages/admin-reset-password"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 
-// Loading fallback component
+// Minimal loading fallback for instant feel
 function PageLoader() {
-  return (
-    <div className="min-h-screen bg-background flex items-center justify-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-    </div>
-  );
+  return null; // No loader for faster perceived performance
 }
 
 function Router() {

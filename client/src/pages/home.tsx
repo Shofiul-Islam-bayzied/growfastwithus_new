@@ -9,13 +9,35 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
-import { AdvancedContactForm } from "@/components/advanced-contact-form";
 import { BookingWidget, BookingButton } from "@/components/BookingWidget";
 import { CurrencySelector } from "@/components/CurrencySelector";
-import { VoiceAIAddonCard } from "@/components/VoiceAIAddonCard";
 
-// Lazy load heavy Three.js background component
-const AnimatedBackground = lazy(() => import("@/components/AnimatedBackground").then(module => ({ default: module.AnimatedBackground })));
+// Lazy load heavy components that are below the fold
+const AdvancedContactForm = lazy(() => import("@/components/advanced-contact-form").then(module => ({ default: module.AdvancedContactForm })));
+const VoiceAIAddonCard = lazy(() => import("@/components/VoiceAIAddonCard").then(module => ({ default: module.VoiceAIAddonCard })));
+
+// Lazy load heavy Three.js background component - only load on desktop and after page is interactive
+const AnimatedBackground = lazy(() => {
+  // Only load on desktop devices and after a delay
+  if (typeof window !== 'undefined' && window.innerWidth < 768) {
+    // Don't load on mobile for better performance
+    return Promise.resolve({ default: () => null });
+  }
+  // Delay loading until after initial render and user interaction
+  return new Promise(resolve => {
+    const loadBackground = () => {
+      import("@/components/AnimatedBackground").then(module => 
+        resolve({ default: module.AnimatedBackground })
+      );
+    };
+    // Load after page is interactive or user scrolls
+    if (document.readyState === 'complete') {
+      setTimeout(loadBackground, 500);
+    } else {
+      window.addEventListener('load', () => setTimeout(loadBackground, 500), { once: true });
+    }
+  });
+});
 import { templates, currencies, voiceAIAddons, convertPrice, formatPrice, type Currency, type VoiceAIAddon } from "@/lib/templates";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -482,8 +504,9 @@ export default function Home() {
 
       {/* Hero Section */}
       <section id="home" ref={heroRef} className="min-h-screen bg-black relative overflow-hidden">
+        {/* Defer background animation - only loads on desktop after page is interactive */}
         <Suspense fallback={null}>
-          <AnimatedBackground className="absolute inset-0" />
+          <AnimatedBackground className="absolute inset-0 hidden md:block" />
         </Suspense>
 
         {/* Minimal geometric shapes for visual interest - Hidden on mobile for performance */}
@@ -523,13 +546,8 @@ export default function Home() {
         
         <div className="container mx-auto px-4 sm:px-6 py-20 sm:py-28 lg:py-32 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            {/* Brand Badge */}
-            <motion.div
-              className="inline-flex items-center space-x-2 sm:space-x-3 glass-card px-4 sm:px-6 py-2 sm:py-3 rounded-full mb-6 sm:mb-8"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={heroInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.8, delay: 0.1 }}
-            >
+            {/* Brand Badge - No animation on mobile for faster LCP */}
+            <div className="inline-flex items-center space-x-2 sm:space-x-3 glass-card px-4 sm:px-6 py-2 sm:py-3 rounded-full mb-6 sm:mb-8">
               <Link href="/">
                 <img 
                   src="/logo.png" 
@@ -542,44 +560,28 @@ export default function Home() {
                 />
               </Link>
               <Badge className="bg-primary text-white px-2 sm:px-3 py-1 text-xs sm:text-sm">AI-Powered</Badge>
-            </motion.div>
+            </div>
 
-            <motion.h1
+            <h1
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 px-4"
-              initial={{ opacity: 0, y: 30 }}
-              animate={heroInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.2 }}
             >
               Automate Your Business
               <span className="block text-primary">Growth & Success</span>
-            </motion.h1>
+            </h1>
             
-            <motion.p
+            <p
               className="text-base sm:text-lg md:text-xl text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto px-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={heroInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.3 }}
             >
               Scale your business with smart automation that eliminates repetitive tasks and drives growth.
-            </motion.p>
+            </p>
 
-            {/* Simple Stats - Optimized for Mobile */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={heroInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex flex-wrap justify-center gap-4 sm:gap-8 mb-6 sm:mb-8 text-gray-400 text-xs sm:text-sm px-4"
-            >
+            {/* Simple Stats - Optimized for Mobile - No animation for faster render */}
+            <div className="flex flex-wrap justify-center gap-4 sm:gap-8 mb-6 sm:mb-8 text-gray-400 text-xs sm:text-sm px-4">
               <span className="whitespace-nowrap">2,500+ Clients</span>
               <span className="whitespace-nowrap">4.9/5 Rating</span>
               <span className="whitespace-nowrap hidden sm:inline">Enterprise Security</span>
-            </motion.div>
-            <motion.div
-              className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center px-4"
-              initial={{ opacity: 0, y: 30 }}
-              animate={heroInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.6 }}
-            >
+            </div>
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center px-4">
               <Link href="/booking">
                 <Button 
                   size="lg" 
@@ -596,17 +598,12 @@ export default function Home() {
               >
                 View Templates
               </Button>
-            </motion.div>
+            </div>
 
-            {/* Trust Indicators */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={heroInView ? { opacity: 1 } : {}}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              className="mt-8 sm:mt-12 text-center px-4"
-            >
+            {/* Trust Indicators - No animation for faster render */}
+            <div className="mt-8 sm:mt-12 text-center px-4">
               <p className="text-gray-500 text-xs sm:text-sm">Trusted by 500+ companies worldwide</p>
-            </motion.div>
+            </div>
           </div>
         </div>
         
@@ -1103,14 +1100,15 @@ export default function Home() {
                     </p>
                     <div className="grid grid-cols-1 gap-4">
                       {voiceAIAddons.map((addon) => (
-                        <VoiceAIAddonCard
-                          key={addon.id}
-                          addon={addon}
-                          currency={selectedCurrency}
-                          isSelected={selectedVoiceAddons.includes(addon.id)}
-                          onToggle={handleVoiceAddonToggle}
-                          className="transition-all hover:shadow-md"
-                        />
+                        <Suspense key={addon.id} fallback={<div className="h-24 bg-gray-800/50 rounded-lg animate-pulse" />}>
+                          <VoiceAIAddonCard
+                            addon={addon}
+                            currency={selectedCurrency}
+                            isSelected={selectedVoiceAddons.includes(addon.id)}
+                            onToggle={handleVoiceAddonToggle}
+                            className="transition-all hover:shadow-md"
+                          />
+                        </Suspense>
                       ))}
                     </div>
                   </div>
@@ -1488,7 +1486,9 @@ export default function Home() {
                 <Card className="glass-card p-8">
                   <CardContent className="p-0">
                     <h3 className="text-2xl font-bold mb-6 text-white">Start Your Automation Journey</h3>
-                    <AdvancedContactForm />
+                    <Suspense fallback={<div className="h-96 bg-gray-800/50 rounded-lg animate-pulse" />}>
+                      <AdvancedContactForm />
+                    </Suspense>
                   </CardContent>
                 </Card>
               </div>

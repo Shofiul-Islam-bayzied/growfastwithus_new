@@ -51,6 +51,8 @@ export default defineConfig({
           'three': ['three'],
           'framer-motion': ['framer-motion'],
           'icons': ['lucide-react', 'react-icons'],
+          // Split large libraries
+          'react-hook-form': ['react-hook-form', '@hookform/resolvers'],
         },
         // Optimize chunk file names
         chunkFileNames: 'assets/js/[name]-[hash].js',
