@@ -128,13 +128,17 @@ export function AdvancedContactForm() {
         body: JSON.stringify(data)
       });
       // Send to Brevo
-      await fetch("https://api.brevo.com/v3/contacts", {
-        method: "POST",
-        headers: {
-          "accept": "application/json",
-          "api-key": "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",
-          "content-type": "application/json"
-        },
+      const brevoApiKey = import.meta.env.VITE_BREVO_API_KEY;
+      if (!brevoApiKey) {
+        console.warn("VITE_BREVO_API_KEY is not set. Brevo contact creation will be skipped.");
+      } else {
+        await fetch("https://api.brevo.com/v3/contacts", {
+          method: "POST",
+          headers: {
+            "accept": "application/json",
+            "api-key": brevoApiKey,
+            "content-type": "application/json"
+          },
         body: JSON.stringify({
           email: data.email,
           attributes: {
@@ -148,7 +152,8 @@ export function AdvancedContactForm() {
           },
           updateEnabled: true
         })
-      });
+        });
+      }
       setIsSubmitted(true);
       toast({
         title: "Application Submitted Successfully!",
