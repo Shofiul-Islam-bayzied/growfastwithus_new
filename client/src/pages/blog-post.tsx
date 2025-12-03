@@ -214,8 +214,33 @@ export default function BlogPost() {
       <SEOHead
         title={`${post.title.rendered} - GrowFastWithUs Blog`}
         description={post.excerpt.rendered.replace(/<[^>]*>/g, "").substring(0, 160)}
-        keywords={tags.map((tag) => tag.name).join(", ")}
+        keywords={`${tags.map((tag) => tag.name).join(", ")}, automation blog, business automation, workflow automation`}
+        canonical={`https://growfastwithus.com/blog/${post.slug}`}
         ogType="article"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "BlogPosting",
+          "headline": post.title.rendered,
+          "description": post.excerpt.rendered.replace(/<[^>]*>/g, "").substring(0, 160),
+          "author": {
+            "@type": "Organization",
+            "name": "GrowFastWithUs"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "GrowFastWithUs",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://growfastwithus.com/logo.png"
+            }
+          },
+          "datePublished": post.date,
+          "dateModified": post.modified || post.date,
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": `https://growfastwithus.com/blog/${post.slug}`
+          }
+        }}
       />
 
       <AnimatedBackground className="absolute inset-0" />

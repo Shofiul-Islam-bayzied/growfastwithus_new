@@ -159,7 +159,7 @@ export const seoTemplates = {
   booking: {
     title: "Book Free Discovery Call - Business Automation Consultation | GrowFastWithUs",
     description: "Schedule a free 30-minute consultation to discuss your business automation needs. Get personalized recommendations and learn how we can help streamline your operations.",
-    keywords: "free consultation, discovery call, business automation consultation, automation planning, workflow consultation, business efficiency consultation",
+    keywords: "free consultation, discovery call, business automation consultation, automation planning, workflow consultation, business efficiency consultation, automation strategy, business process consultation",
     canonical: "https://growfastwithus.com/booking",
     structuredData: {
       "@context": "https://schema.org",

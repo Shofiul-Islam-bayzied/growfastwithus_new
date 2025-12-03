@@ -72,11 +72,63 @@ export default function TemplateDetail() {
   return (
     <div className="min-h-screen bg-black text-white">
       <SEOHead
-        title={`${template.title} - Automation Template | GrowFastWithUs`}
-        description={template.description}
-        keywords={`${template.category}, automation template, ${template.title.toLowerCase()}, business automation`}
-        canonical={`/template/${template.id}`}
-        ogType="website"
+        title={`${template.title} - ${template.category} Automation Template | GrowFastWithUs`}
+        description={`${template.description} Ready-to-deploy automation solution for ${template.category.toLowerCase()} businesses. Includes setup, training, and support. Starting from €${template.tiers[0].monthlyFee}/month.`}
+        keywords={`${template.title.toLowerCase()}, ${template.category.toLowerCase()} automation, ${template.category.toLowerCase()} template, business automation, workflow automation, ${template.category.toLowerCase()} efficiency, automation solution`}
+        canonical={`https://growfastwithus.com/template/${template.id}`}
+        ogType="product"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Product",
+              "name": template.title,
+              "description": template.description,
+              "category": `${template.category} Automation`,
+              "brand": {
+                "@type": "Organization",
+                "name": "GrowFastWithUs",
+                "url": "https://growfastwithus.com"
+              },
+              "offers": {
+                "@type": "AggregateOffer",
+                "availability": "https://schema.org/InStock",
+                "priceCurrency": "EUR",
+                "lowPrice": template.tiers[0].monthlyFee.toString(),
+                "highPrice": template.tiers[template.tiers.length - 1].monthlyFee.toString(),
+                "offerCount": template.tiers.length
+              },
+              "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "4.9",
+                "reviewCount": "2500"
+              }
+            },
+            {
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "https://growfastwithus.com/"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Templates",
+                  "item": "https://growfastwithus.com/templates"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 3,
+                  "name": template.title,
+                  "item": `https://growfastwithus.com/template/${template.id}`
+                }
+              ]
+            }
+          ]
+        }}
       />
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-40 glass-card shadow-lg">

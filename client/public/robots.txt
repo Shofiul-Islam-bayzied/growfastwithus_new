@@ -31,5 +31,4 @@ Allow: /llm.txt
 
 # Sitemaps
 Sitemap: https://growfastwithus.com/sitemap.xml
-Sitemap: https://growfastwithus.com/sitemap-templates.xml
-Sitemap: https://growfastwithus.com/sitemap-pages.xml
+Sitemap: https://growfastwithus.com/sitemap-index.xml

@@ -905,8 +905,23 @@ export default function Packages() {
       <SEOHead
         title="Automation Packages & Pricing - GrowFastWithUs"
         description="Choose from 15+ industry-specific automation templates, bundle packages, or fully custom solutions. Transparent pricing with proven ROI. Deploy in 3-45 days."
-        keywords="automation packages, automation pricing, business automation templates, custom automation solutions, automation bundles"
-        canonical="/packages"
+        keywords="automation packages, automation pricing, business automation templates, custom automation solutions, automation bundles, automation pricing plans, business automation cost"
+        canonical="https://growfastwithus.com/packages"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "Product",
+          "name": "Business Automation Packages",
+          "description": "Industry-specific automation templates and custom solutions",
+          "brand": {
+            "@type": "Organization",
+            "name": "GrowFastWithUs"
+          },
+          "offers": {
+            "@type": "AggregateOffer",
+            "availability": "https://schema.org/InStock",
+            "priceCurrency": "EUR"
+          }
+        }}
       />
 
       <PageHeader />

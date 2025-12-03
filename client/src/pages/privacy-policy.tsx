@@ -24,8 +24,8 @@ export default function PrivacyPolicy() {
       <SEOHead
         title="Privacy Policy - GrowFastWithUs | Data Protection & Privacy"
         description="Learn how GrowFastWithUs protects your personal information. Our comprehensive privacy policy explains data collection, usage, security measures, and your rights under GDPR."
-        keywords="privacy policy, data protection, GDPR, personal data, data security, privacy rights, data collection"
-        canonical="/privacy-policy"
+        keywords="privacy policy, data protection, GDPR, personal data, data security, privacy rights, data collection, privacy statement"
+        canonical="https://growfastwithus.com/privacy-policy"
         ogType="website"
       />
       {/* Page Header */}

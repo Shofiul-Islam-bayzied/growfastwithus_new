@@ -20,29 +20,33 @@ const OUTPUT_PATH = path.join(__dirname, '../client/public/sitemap.xml');
 const staticPages = [
   { url: '/', priority: '1.0', changefreq: 'weekly' },
   { url: '/templates', priority: '0.9', changefreq: 'weekly' },
-  { url: '/blog', priority: '0.9', changefreq: 'daily' },
+  { url: '/packages', priority: '0.9', changefreq: 'weekly' },
   { url: '/services', priority: '0.8', changefreq: 'monthly' },
   { url: '/booking', priority: '0.8', changefreq: 'monthly' },
+  { url: '/blog', priority: '0.9', changefreq: 'daily' },
   { url: '/privacy-policy', priority: '0.5', changefreq: 'yearly' },
   { url: '/terms-of-service', priority: '0.5', changefreq: 'yearly' },
   { url: '/gdpr', priority: '0.5', changefreq: 'yearly' },
   { url: '/llm.txt', priority: '0.7', changefreq: 'monthly' }
 ];
 
-// Template IDs (these should match your actual template IDs)
+// Template IDs (all current templates from templates.ts)
 const templateIds = [
   'ai-medical-practice',
-  'real-estate-sales-funnel',
-  'ecommerce-smart-ops',
-  'professional-services-crm',
-  'restaurant-operations',
-  'fitness-studio-manager',
-  'contractor-project-pipeline',
-  'salon-spa-booking',
-  'law-firm-case-manager',
-  'financial-advisory',
-  'nonprofit-automation',
-  'education-management'
+  'real-estate-sales-marketing',
+  'ecommerce-order-inventory',
+  'customer-support-automation',
+  'ai-voice-call-assistant',
+  'whatsapp-business-automation',
+  'social-media-scheduler-analytics',
+  'email-marketing-automation',
+  'hr-recruitment-automation',
+  'restaurant-hospitality-management',
+  'financial-services-automation',
+  'legal-practice-management',
+  'educational-institution-management',
+  'fitness-wellness-business-management',
+  'manufacturing-supply-chain-management'
 ];
 
 // Generate current date in ISO format

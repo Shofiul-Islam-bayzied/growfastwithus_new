@@ -128,7 +128,8 @@ export default function Blog() {
       <SEOHead
         title="Blog - GrowFastWithUs | Automation Insights & Articles"
         description="Discover the latest automation tips, industry insights, and best practices to help your business grow faster with smart automation solutions."
-        keywords="automation blog, business automation, workflow automation, AI insights, productivity tips"
+        keywords="automation blog, business automation, workflow automation, AI insights, productivity tips, automation articles, business efficiency tips"
+        canonical="https://growfastwithus.com/blog"
         ogType="website"
       />
 

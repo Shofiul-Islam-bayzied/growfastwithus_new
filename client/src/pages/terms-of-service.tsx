@@ -24,8 +24,8 @@ export default function TermsOfService() {
       <SEOHead
         title="Terms of Service - GrowFastWithUs | Service Agreement"
         description="Read our Terms of Service to understand the terms and conditions for using GrowFastWithUs automation services, payment terms, user responsibilities, and limitations of liability."
-        keywords="terms of service, service agreement, terms and conditions, user agreement, service terms, legal terms"
-        canonical="/terms-of-service"
+        keywords="terms of service, service agreement, terms and conditions, user agreement, service terms, legal terms, terms of use"
+        canonical="https://growfastwithus.com/terms-of-service"
         ogType="website"
       />
       {/* Page Header */}

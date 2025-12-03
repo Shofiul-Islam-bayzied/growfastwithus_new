@@ -24,8 +24,8 @@ export default function GDPR() {
       <SEOHead
         title="GDPR Compliance - GrowFastWithUs | Your Data Protection Rights"
         description="Understand your GDPR rights and how GrowFastWithUs complies with the General Data Protection Regulation. Learn about data access, rectification, erasure, and portability rights."
-        keywords="GDPR, GDPR compliance, data protection rights, right to access, right to erasure, data portability, GDPR rights, data protection regulation"
-        canonical="/gdpr"
+        keywords="GDPR, GDPR compliance, data protection rights, right to access, right to erasure, data portability, GDPR rights, data protection regulation, EU data protection"
+        canonical="https://growfastwithus.com/gdpr"
         ogType="website"
       />
       {/* Page Header */}

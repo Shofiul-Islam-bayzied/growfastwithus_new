@@ -230,8 +230,21 @@ export default function Services() {
       <SEOHead
         title="Our Services - AI-Powered Automation Solutions | GrowFastWithUs"
         description="Discover our comprehensive automation services: Workflow Automation, AI Agent Integration, Custom SaaS Solutions, Business Intelligence, and more. Enterprise-grade solutions with proven ROI."
-        keywords="automation services, AI integration, workflow automation, business intelligence, custom saas, API management"
-        canonical="/services"
+        keywords="automation services, AI integration, workflow automation, business intelligence, custom saas, API management, business process automation, AI automation services"
+        canonical="https://growfastwithus.com/services"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "Service",
+          "name": "Business Automation Services",
+          "description": "AI-powered automation solutions for businesses",
+          "provider": {
+            "@type": "Organization",
+            "name": "GrowFastWithUs",
+            "url": "https://growfastwithus.com"
+          },
+          "serviceType": "Business Automation",
+          "areaServed": "Worldwide"
+        }}
       />
 
       {/* Page Header */}
