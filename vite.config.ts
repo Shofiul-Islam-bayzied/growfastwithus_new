@@ -6,7 +6,10 @@ import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 export default defineConfig({
   plugins: [
     react(),
-    runtimeErrorOverlay(),
+    // Only enable runtime error overlay in development with Replit
+    ...(process.env.NODE_ENV !== "production" && process.env.REPL_ID !== undefined
+      ? [runtimeErrorOverlay()]
+      : []),
     ...(process.env.NODE_ENV !== "production" &&
     process.env.REPL_ID !== undefined
       ? [
@@ -30,6 +33,7 @@ export default defineConfig({
     minify: "esbuild",
     sourcemap: false,
     cssMinify: true,
+    target: 'es2020', // Better browser compatibility
     rollupOptions: {
       output: {
         manualChunks: {

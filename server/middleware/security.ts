@@ -26,11 +26,20 @@ export function setupSecurityMiddleware(app: any) {
         scriptSrc: [
           "'self'", 
           "'unsafe-inline'", // Needed for Vite in dev mode
-          ...(isDevelopment ? ["'unsafe-eval'"] : []), // Vite HMR needs eval in dev
+          ...(isDevelopment ? ["'unsafe-eval'", "data:"] : []), // Vite HMR needs eval and data URIs in dev
           "https://cal.com",
           "https://*.cal.com",
           "https://embed.cal.com"
         ],
+        scriptSrcElem: [
+          "'self'",
+          "'unsafe-inline'",
+          ...(isDevelopment ? ["data:"] : []), // Allow data URIs for scripts in development
+          "https://cal.com",
+          "https://*.cal.com",
+          "https://embed.cal.com"
+        ],
+        scriptSrcAttr: ["'unsafe-inline'"], // Allow inline event handlers if needed
         imgSrc: ["'self'", "data:", "https:", "http:"],
         connectSrc: [
           "'self'",

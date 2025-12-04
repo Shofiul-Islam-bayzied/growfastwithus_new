@@ -55,11 +55,10 @@
     <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
     
     <!-- Load fonts asynchronously with optional display for faster rendering -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=optional" media="print" onload="this.media='all'" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=optional" media="all" />
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=optional" /></noscript>
     
     <!-- Preload critical resources -->
-    <link rel="preload" href="/logo.png" as="image" fetchpriority="high" />
     <link rel="modulepreload" href="/src/main.tsx" />
     
     <!-- Resource hints for faster loading -->
@@ -232,7 +231,5 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <!-- This is a replit script which adds a banner on the top of the page when opened in development mode outside the replit environment -->
-    <script type="text/javascript" src="https://replit.com/public/js/replit-dev-banner.js" defer></script>
   </body>
 </html>
