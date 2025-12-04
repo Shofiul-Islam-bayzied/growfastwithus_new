@@ -13,7 +13,8 @@ import {
   Users,
   TrendingUp,
   Shield,
-  Settings
+  Settings,
+  ShoppingBag
 } from "lucide-react";
 
 export default function Footer() {
@@ -92,6 +93,12 @@ export default function Footer() {
                 <Globe className="w-4 h-4 text-primary" />
                 <Link href="/services" className="hover:text-primary transition-colors">
                   Hosting & API Management
+                </Link>
+              </li>
+              <li className="flex items-center space-x-2 hover:text-primary transition-colors cursor-pointer">
+                <ShoppingBag className="w-4 h-4 text-primary" />
+                <Link href="/packages" className="hover:text-primary transition-colors">
+                  Service Packages
                 </Link>
               </li>
             </ul>
@@ -195,6 +202,9 @@ export default function Footer() {
         <div className="border-t border-gray-700 pt-8 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
           <p className="text-gray-400 text-sm sm:text-base">© 2025 GrowFastWithUs. All rights reserved.</p>
           <div className="flex flex-wrap justify-center sm:justify-end space-x-4 sm:space-x-6 text-sm sm:text-base">
+            <Link href="/about" className="text-gray-400 hover:text-primary transition-colors">
+              About Us
+            </Link>
             <Link href="/privacy-policy" className="text-gray-400 hover:text-primary transition-colors">
               Privacy Policy
             </Link>

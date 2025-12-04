@@ -158,6 +158,8 @@ export default function Home() {
   const [selectedCurrency, setSelectedCurrency] = useState<Currency>(currencies[0]); // Default to GBP
   const [selectedVoiceAddons, setSelectedVoiceAddons] = useState<string[]>([]);
   const [showStickyCTA, setShowStickyCTA] = useState(false);
+  const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
@@ -404,10 +406,46 @@ export default function Home() {
             
             <div className="hidden lg:flex items-center space-x-8">
               <a href="#home" className="hover:text-primary transition-colors" onClick={(e) => { e.preventDefault(); scrollToSection('home'); }}>Home</a>
-              <Link href="/services" className="hover:text-primary transition-colors">Services</Link>
+              
+              {/* Services Dropdown */}
+              <div 
+                className="relative"
+                onMouseEnter={() => setServicesDropdownOpen(true)}
+                onMouseLeave={() => setServicesDropdownOpen(false)}
+              >
+                <Link href="/services" className="hover:text-primary transition-colors flex items-center gap-1">
+                  Services
+                  <ChevronDown className={`w-4 h-4 transition-transform ${servicesDropdownOpen ? 'rotate-180' : ''}`} />
+                </Link>
+                
+                {servicesDropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="absolute top-full left-0 mt-2 w-48 glass-card backdrop-blur-2xl bg-black/90 border border-white/10 rounded-lg shadow-2xl py-2 z-50"
+                  >
+                    <Link 
+                      href="/services" 
+                      className="block px-4 py-2 hover:bg-white/10 transition-colors"
+                      onClick={() => setServicesDropdownOpen(false)}
+                    >
+                      All Services
+                    </Link>
+                    <Link 
+                      href="/packages" 
+                      className="block px-4 py-2 hover:bg-white/10 transition-colors"
+                      onClick={() => setServicesDropdownOpen(false)}
+                    >
+                      Packages
+                    </Link>
+                  </motion.div>
+                )}
+              </div>
+              
               <Link href="/templates" className="hover:text-primary transition-colors">Templates</Link>
-              <Link href="/packages" className="hover:text-primary transition-colors">Packages</Link>
               <Link href="/blog" className="hover:text-primary transition-colors">Blog</Link>
+              <Link href="/about" className="hover:text-primary transition-colors">About</Link>
               <Link href="/booking" className="hover:text-primary transition-colors">Book Consultation</Link>
               <a href="#contact" className="hover:text-primary transition-colors" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>Contact</a>
             </div>
@@ -474,20 +512,77 @@ export default function Home() {
               }}
             >
               <div className="p-6 space-y-1">
+                {/* Home */}
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0 * 0.05 }}
+                >
+                  <a
+                    href="#home"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      scrollToSection('home');
+                      setMobileMenuOpen(false);
+                    }}
+                    className="block py-3 px-4 text-base font-medium text-white hover:bg-white/10 rounded-lg transition-colors active:scale-95 transform duration-150"
+                  >
+                    Home
+                  </a>
+                </motion.div>
+
+                {/* Services with Dropdown */}
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 1 * 0.05 }}
+                >
+                  <button
+                    onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                    className="w-full flex items-center justify-between py-3 px-4 text-base font-medium text-white hover:bg-white/10 rounded-lg transition-colors active:scale-95 transform duration-150"
+                  >
+                    Services
+                    <ChevronDown className={`w-4 h-4 transition-transform ${mobileServicesOpen ? 'rotate-180' : ''}`} />
+                  </button>
+                  
+                  {mobileServicesOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="ml-4 mt-1 space-y-1"
+                    >
+                      <Link
+                        href="/services"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="block py-2 px-4 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors active:scale-95 transform duration-150"
+                      >
+                        All Services
+                      </Link>
+                      <Link
+                        href="/packages"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="block py-2 px-4 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors active:scale-95 transform duration-150"
+                      >
+                        Packages
+                      </Link>
+                    </motion.div>
+                  )}
+                </motion.div>
+
+                {/* Other Menu Items */}
                 {[
-                  { href: "#home", label: "Home", action: () => scrollToSection('home') },
-                  { href: "/services", label: "Services", isLink: true },
-                  { href: "/templates", label: "Templates", isLink: true },
-                  { href: "/packages", label: "Packages", isLink: true },
-                  { href: "/blog", label: "Blog", isLink: true },
-                  { href: "/booking", label: "Book Consultation", isLink: true },
-                  { href: "#contact", label: "Contact", action: () => scrollToSection('contact') }
-                ].map((item, index) => (
+                  { href: "/templates", label: "Templates", isLink: true, index: 2 },
+                  { href: "/blog", label: "Blog", isLink: true, index: 3 },
+                  { href: "/about", label: "About", isLink: true, index: 4 },
+                  { href: "/booking", label: "Book Consultation", isLink: true, index: 5 },
+                  { href: "#contact", label: "Contact", action: () => scrollToSection('contact'), index: 6 }
+                ].map((item) => (
                   <motion.div
                     key={item.label}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05 }}
+                    transition={{ delay: item.index * 0.05 }}
                   >
                     {item.isLink ? (
                       <Link

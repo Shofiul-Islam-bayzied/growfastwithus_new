@@ -19,6 +19,7 @@ const TemplateDetail = lazy(() => import("@/pages/template-detail-new"));
 const Booking = lazy(() => import("@/pages/booking"));
 const Blog = lazy(() => import("@/pages/blog"));
 const BlogPost = lazy(() => import("@/pages/blog-post"));
+const About = lazy(() => import("@/pages/about"));
 const PrivacyPolicy = lazy(() => import("@/pages/privacy-policy"));
 const TermsOfService = lazy(() => import("@/pages/terms-of-service"));
 const GDPR = lazy(() => import("@/pages/gdpr"));
@@ -48,6 +49,7 @@ function Router() {
           <Route path="/booking" component={Booking} />
           <Route path="/blog" component={Blog} />
           <Route path="/blog/:slug" component={BlogPost} />
+          <Route path="/about" component={About} />
           <Route path="/admin" component={AdminDashboard} />
           <Route path="/admin-login" component={AdminLogin} />
           <Route path="/admin-register" component={AdminRegister} />
