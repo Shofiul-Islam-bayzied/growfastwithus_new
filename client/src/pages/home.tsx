@@ -17,7 +17,7 @@ const AdvancedContactForm = lazy(() => import("@/components/advanced-contact-for
 const VoiceAIAddonCard = lazy(() => import("@/components/VoiceAIAddonCard").then(module => ({ default: module.VoiceAIAddonCard })));
 
 // Lazy load heavy Three.js background component - only load on desktop and after page is interactive
-const AnimatedBackground = lazy(() => {
+const AnimatedBackground = lazy<React.ComponentType<{ className?: string }>>(() => {
   // Only load on desktop devices and after a delay
   if (typeof window !== 'undefined' && window.innerWidth < 768) {
     // Don't load on mobile for better performance
