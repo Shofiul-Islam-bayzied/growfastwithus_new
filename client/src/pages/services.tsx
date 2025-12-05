@@ -281,7 +281,7 @@ export default function Services() {
             transition={{ duration: 0.6 }}
             className="text-center mb-8 sm:mb-12"
           >
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 px-4">Our Services</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-3 sm:mb-4 px-4">Our Services</h2>
             <p className="text-base sm:text-lg text-gray-400 max-w-3xl mx-auto px-4">
               Comprehensive automation solutions designed to transform your business operations
             </p>
@@ -307,7 +307,7 @@ export default function Services() {
                             <service.icon className="w-6 h-6 sm:w-8 sm:h-8 text-primary/70 stroke-[1.5]" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-2">{service.title}</h3>
+                            <h3 className="text-xl sm:text-2xl font-bold mb-2">{service.title}</h3>
                             <p className="text-sm sm:text-base text-gray-400 mb-3">{service.description}</p>
                           </div>
                         </div>
@@ -371,8 +371,8 @@ export default function Services() {
             transition={{ duration: 0.6 }}
             className="text-center mb-8 sm:mb-12 lg:mb-16 px-4"
           >
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">How We Work</h2>
-            <p className="text-base sm:text-lg lg:text-xl text-gray-400 max-w-3xl mx-auto">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 sm:mb-6">How We Work</h2>
+            <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
               Our proven 5-phase process ensures fast delivery with measurable results
             </p>
           </motion.div>
@@ -418,8 +418,8 @@ export default function Services() {
             transition={{ duration: 0.6 }}
             className="text-center mb-8 sm:mb-12 lg:mb-16 px-4"
           >
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">Why Choose GrowFastWithUs</h2>
-            <p className="text-base sm:text-lg lg:text-xl text-gray-400 max-w-3xl mx-auto">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 sm:mb-6">Why Choose GrowFastWithUs</h2>
+            <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
               We combine speed, expertise, and proven results to deliver automation that transforms your business
             </p>
           </motion.div>
@@ -458,8 +458,8 @@ export default function Services() {
             transition={{ duration: 0.6 }}
             className="text-center mb-8 sm:mb-12 lg:mb-16 px-4"
           >
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">Our Technology Stack</h2>
-            <p className="text-base sm:text-lg lg:text-xl text-gray-400 max-w-3xl mx-auto">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 sm:mb-6">Our Technology Stack</h2>
+            <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
               Enterprise-grade tools and platforms powering your automation
             </p>
           </motion.div>
@@ -500,10 +500,10 @@ export default function Services() {
           >
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5" />
             <div className="relative z-10 text-center max-w-3xl mx-auto">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
+              <h2 className="text-3xl sm:text-4xl font-bold mb-4 sm:mb-6">
                 Ready to Transform Your Business?
               </h2>
-              <p className="text-base sm:text-lg lg:text-xl text-gray-300 mb-6 sm:mb-8">
+              <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-6 sm:mb-8">
                 Schedule a free consultation and discover how automation can generate measurable ROI for your business within weeks.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">

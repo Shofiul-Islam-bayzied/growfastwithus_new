@@ -242,7 +242,7 @@ export function MultiStepForm({ onSubmit }: MultiStepFormProps) {
                 <Label>Current Pain Points (Select all that apply)</Label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
                   {painPointOptions.map((painPoint) => (
-                    <div key={painPoint} className="flex items-center space-x-2">
+                    <div key={painPoint} className="flex items-center space-x-3 min-h-[44px]">
                       <Checkbox
                         id={painPoint}
                         checked={painPoints.includes(painPoint)}
@@ -250,7 +250,7 @@ export function MultiStepForm({ onSubmit }: MultiStepFormProps) {
                           handlePainPointChange(painPoint, checked as boolean)
                         }
                       />
-                      <Label htmlFor={painPoint} className="text-sm">
+                      <Label htmlFor={painPoint} className="text-sm cursor-pointer">
                         {painPoint}
                       </Label>
                     </div>

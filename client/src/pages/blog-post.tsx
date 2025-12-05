@@ -160,7 +160,7 @@ export default function BlogPost() {
           <Card className="glass-card max-w-2xl mx-auto p-8">
             <CardContent className="p-0 text-center">
               <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
-              <h1 className="text-3xl font-bold text-white mb-4">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
                 {errorTitle}
               </h1>
               <p className="text-gray-400 mb-4">
@@ -398,7 +398,7 @@ export default function BlogPost() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="max-w-6xl mx-auto mt-16"
           >
-            <h2 className="text-3xl font-bold text-white mb-8 text-center">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-8 text-center">
               Related Articles
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -418,7 +418,7 @@ export default function BlogPost() {
         >
           <Card className="glass-card p-8 lg:p-12 text-center">
             <CardContent className="p-0">
-              <h3 className="text-2xl lg:text-3xl font-bold text-white mb-4">
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-4">
                 Ready to Transform Your Business?
               </h3>
               <p className="text-lg text-gray-300 mb-6">

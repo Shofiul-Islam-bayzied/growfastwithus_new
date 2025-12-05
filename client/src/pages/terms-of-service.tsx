@@ -65,8 +65,8 @@ export default function TermsOfService() {
                 <FileText className="w-7 h-7 sm:w-8 sm:h-8 text-primary" />
               </div>
             </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 px-4">Terms of Service</h1>
-            <p className="text-base sm:text-lg lg:text-xl text-gray-400 px-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4 px-4">Terms of Service</h1>
+            <p className="text-base sm:text-lg md:text-xl text-gray-400 px-4">
               Last updated: January 1, 2025
             </p>
           </motion.div>
@@ -108,7 +108,7 @@ export default function TermsOfService() {
                 <CardContent className="p-4 sm:p-6 lg:p-8">
                   <div className="flex items-center space-x-3 mb-6">
                     <Users className="w-6 h-6 text-primary" />
-                    <h2 className="text-2xl font-bold">Service Description</h2>
+                    <h2 className="text-xl sm:text-2xl font-bold">Service Description</h2>
                   </div>
                   <div className="space-y-3 sm:space-y-4 text-gray-300 text-sm sm:text-base leading-relaxed">
                     <p>
@@ -139,7 +139,7 @@ export default function TermsOfService() {
                 <CardContent className="p-4 sm:p-6 lg:p-8">
                   <div className="flex items-center space-x-3 mb-6">
                     <CreditCard className="w-6 h-6 text-primary" />
-                    <h2 className="text-2xl font-bold">Payment Terms</h2>
+                    <h2 className="text-xl sm:text-2xl font-bold">Payment Terms</h2>
                   </div>
                   <div className="space-y-3 sm:space-y-4 text-gray-300 text-sm sm:text-base leading-relaxed">
                     <p>
@@ -167,7 +167,7 @@ export default function TermsOfService() {
                 <CardContent className="p-4 sm:p-6 lg:p-8">
                   <div className="flex items-center space-x-3 mb-6">
                     <AlertTriangle className="w-6 h-6 text-primary" />
-                    <h2 className="text-2xl font-bold">Limitations of Liability</h2>
+                    <h2 className="text-xl sm:text-2xl font-bold">Limitations of Liability</h2>
                   </div>
                   <div className="space-y-3 sm:space-y-4 text-gray-300 text-sm sm:text-base leading-relaxed">
                     <p>
@@ -195,7 +195,7 @@ export default function TermsOfService() {
                 <CardContent className="p-4 sm:p-6 lg:p-8">
                   <div className="flex items-center space-x-3 mb-6">
                     <Users className="w-6 h-6 text-primary" />
-                    <h2 className="text-2xl font-bold">User Responsibilities</h2>
+                    <h2 className="text-xl sm:text-2xl font-bold">User Responsibilities</h2>
                   </div>
                   <div className="space-y-3 sm:space-y-4 text-gray-300 text-sm sm:text-base leading-relaxed">
                     <p>
@@ -224,7 +224,7 @@ export default function TermsOfService() {
                 <CardContent className="p-4 sm:p-6 lg:p-8">
                   <div className="flex items-center space-x-3 mb-6">
                     <Mail className="w-6 h-6 text-primary" />
-                    <h2 className="text-2xl font-bold">Contact & Disputes</h2>
+                    <h2 className="text-xl sm:text-2xl font-bold">Contact & Disputes</h2>
                   </div>
                   <div className="space-y-3 sm:space-y-4 text-gray-300 text-sm sm:text-base leading-relaxed">
                     <p>
@@ -249,7 +249,7 @@ export default function TermsOfService() {
             transition={{ duration: 0.6, delay: 0.8 }}
             className="text-center mt-16 p-8 rounded-lg bg-gradient-to-r from-primary/20 to-primary/10 border border-primary/30"
           >
-            <h3 className="text-2xl font-bold mb-4">Need Clarification on Our Terms?</h3>
+            <h3 className="text-xl sm:text-2xl font-bold mb-4">Need Clarification on Our Terms?</h3>
             <p className="text-gray-300 mb-6">
               Our team is available to explain any aspect of our Terms of Service and how they apply to your business.
             </p>

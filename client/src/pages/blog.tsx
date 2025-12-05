@@ -149,11 +149,11 @@ export default function Blog() {
               <span className="text-xs sm:text-sm font-medium text-gray-300">Blog & Insights</span>
             </div>
             
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-4 sm:mb-6 leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 leading-tight">
               Automation <span className="text-primary">Insights</span>
             </h1>
             
-            <p className="text-base sm:text-lg lg:text-xl text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto px-2">
+            <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto px-2">
               Explore the latest trends, tips, and strategies to supercharge your business with automation
             </p>
 
@@ -313,10 +313,10 @@ export default function Blog() {
           >
             <Card className="glass-card p-6 sm:p-12">
               <CardContent className="p-0">
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-3 sm:mb-4 leading-tight">
+                <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3 sm:mb-4 leading-tight">
                   Ready to Automate Your Business?
                 </h2>
-                <p className="text-base sm:text-lg lg:text-xl text-gray-300 mb-6 sm:mb-8">
+                <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-6 sm:mb-8">
                   Let's discuss how automation can transform your operations and drive growth
                 </p>
                 <Link href="/booking">

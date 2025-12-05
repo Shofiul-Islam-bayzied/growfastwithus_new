@@ -445,7 +445,7 @@ export default function Home() {
               
               <Link href="/templates" className="hover:text-primary transition-colors">Templates</Link>
               <Link href="/blog" className="hover:text-primary transition-colors">Blog</Link>
-              <Link href="/about" className="hover:text-primary transition-colors">About</Link>
+              <Link href="/about" className="hover:text-primary transition-colors">About Us</Link>
               <Link href="/booking" className="hover:text-primary transition-colors">Book Consultation</Link>
               <a href="#contact" className="hover:text-primary transition-colors" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>Contact</a>
             </div>
@@ -574,7 +574,7 @@ export default function Home() {
                 {[
                   { href: "/templates", label: "Templates", isLink: true, index: 2 },
                   { href: "/blog", label: "Blog", isLink: true, index: 3 },
-                  { href: "/about", label: "About", isLink: true, index: 4 },
+                  { href: "/about", label: "About Us", isLink: true, index: 4 },
                   { href: "/booking", label: "Book Consultation", isLink: true, index: 5 },
                   { href: "#contact", label: "Contact", action: () => scrollToSection('contact'), index: 6 }
                 ].map((item) => (
@@ -770,8 +770,8 @@ export default function Home() {
               <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
               <span className="text-xs sm:text-sm font-medium text-gray-300">Our Services</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6 px-4">What We Automate</h2>
-            <p className="text-base sm:text-lg lg:text-xl text-gray-300 max-w-3xl mx-auto px-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4 sm:mb-6 px-4">What We Automate</h2>
+            <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-3xl mx-auto px-4">
               Transform your business operations with our comprehensive automation solutions designed for modern enterprises
             </p>
           </motion.div>
@@ -812,7 +812,7 @@ export default function Home() {
       <section className="py-12 sm:py-16 lg:py-20 bg-gray-950">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="text-center mb-8 sm:mb-12 lg:mb-16 px-4">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-3 sm:mb-4 text-white">Your tools, seamlessly connected</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-3 sm:mb-4 text-white">Your tools, seamlessly connected</h2>
             <p className="text-base sm:text-lg lg:text-xl text-gray-400">We integrate with the platforms you already use</p>
           </div>
           
@@ -856,8 +856,8 @@ export default function Home() {
       <section className="py-20 bg-gray-950">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl lg:text-5xl font-bold mb-4 text-white">Trusted by Growing Businesses</h2>
-            <p className="text-xl text-gray-400">Join 100+ companies that have automated their success</p>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">Trusted by Growing Businesses</h2>
+            <p className="text-base sm:text-lg md:text-xl text-gray-400">Join 100+ companies that have automated their success</p>
           </div>
           
           {/* Stats */}
@@ -975,8 +975,8 @@ export default function Home() {
       <section className="py-20 bg-black">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl lg:text-5xl font-bold mb-4 text-white">How It <span className="text-primary">Works</span></h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">How It <span className="text-primary">Works</span></h2>
+            <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-2xl mx-auto">
               From consultation to implementation, we make automation simple and stress-free.
             </p>
           </div>
@@ -1020,7 +1020,7 @@ export default function Home() {
                     <step.icon className="w-6 h-6 text-primary" />
                   </div>
                 </div>
-                <h3 className="text-2xl font-bold mb-4 text-white">{step.title}</h3>
+                <h3 className="text-xl sm:text-2xl font-bold mb-4 text-white">{step.title}</h3>
                 <p className="text-gray-400 leading-relaxed mb-4">{step.description}</p>
                 <div className="inline-flex items-center px-3 py-1 bg-primary/10 rounded-full border border-primary/20">
                   <span className="text-primary text-sm font-medium">{step.duration}</span>
@@ -1040,8 +1040,8 @@ export default function Home() {
             animate={templatesInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-4xl lg:text-5xl font-bold mb-4 text-white">Ready-to-Go Templates</h2>
-            <p className="text-xl text-gray-400 mb-8">Launch in days, not months</p>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">Ready-to-Go Templates</h2>
+            <p className="text-base sm:text-lg md:text-xl text-gray-400 mb-8">Launch in days, not months</p>
             
             {/* Template Filter */}
             <div className="flex flex-wrap justify-center gap-4 mb-8">
@@ -1074,7 +1074,7 @@ export default function Home() {
                       <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/80 rounded-2xl flex items-center justify-center mb-6 group-hover:shadow-lg group-hover:shadow-primary/50 transition-all duration-300">
                         <Zap className="w-8 h-8 text-white" />
                       </div>
-                      <h3 className="text-2xl font-bold mb-4 text-white">{template.title}</h3>
+                      <h3 className="text-xl sm:text-2xl font-bold mb-4 text-white">{template.title}</h3>
                       <p className="text-gray-400 mb-6 leading-relaxed">{template.description}</p>
                       <div className="space-y-2 mb-6">
                         {template.tiers[0].features.slice(0, 3).map((feature) => (
@@ -1124,7 +1124,7 @@ export default function Home() {
           >
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
               <div className="text-left px-4 sm:px-0">
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-3 sm:mb-4 text-white">Calculate Your Automation Investment</h2>
+                <h2 className="text-3xl sm:text-4xl font-bold mb-3 sm:mb-4 text-white">Calculate Your Automation Investment</h2>
                 <p className="text-base sm:text-lg lg:text-xl text-gray-400 max-w-2xl">
                   See your potential ROI and cost savings with our interactive calculator
                 </p>
@@ -1171,14 +1171,14 @@ export default function Home() {
                     <h4 className="font-semibold mb-3 sm:mb-4 text-white text-sm sm:text-base">Current Pain Points (Select all that apply)</h4>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                       {painPointOptions.map((painPoint) => (
-                        <div key={painPoint} className="flex items-center space-x-2 sm:space-x-3 min-h-[44px]">
+                        <div key={painPoint} className="flex items-center space-x-3 min-h-[44px]">
                           <Checkbox
                             id={painPoint}
                             checked={painPoints.includes(painPoint)}
                             onCheckedChange={(checked) =>
                               handlePainPointChange(painPoint, checked as boolean)
                             }
-                            className="h-5 w-5 sm:h-4 sm:w-4"
+                            className="h-5 w-5"
                           />
                           <label htmlFor={painPoint} className="text-sm cursor-pointer text-gray-300 touch-manipulation">
                             {painPoint}
@@ -1367,8 +1367,8 @@ export default function Home() {
       <section className="py-20 bg-black">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl lg:text-5xl font-bold mb-4 text-white">Frequently Asked Questions</h2>
-            <p className="text-xl text-gray-400">Everything you need to know about automation</p>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">Frequently Asked Questions</h2>
+            <p className="text-base sm:text-lg md:text-xl text-gray-400">Everything you need to know about automation</p>
           </div>
           
           <div className="max-w-4xl mx-auto space-y-4">
@@ -1426,8 +1426,8 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <h2 className="text-4xl lg:text-5xl font-bold mb-4 text-white">Free Automation Audit</h2>
-              <p className="text-xl text-gray-400 mb-8">
+              <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">Free Automation Audit</h2>
+              <p className="text-base sm:text-lg md:text-xl text-gray-400 mb-8">
                 Get a comprehensive analysis of your business processes and discover 
                 automation opportunities worth thousands in savings
               </p>
@@ -1436,7 +1436,7 @@ export default function Home() {
                 <CardContent className="p-0">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                     <div className="text-left">
-                      <h3 className="text-2xl font-bold mb-4 text-white">What You'll Get:</h3>
+                      <h3 className="text-xl sm:text-2xl font-bold mb-4 text-white">What You'll Get:</h3>
                       <ul className="space-y-3">
                         {[
                           "Process efficiency analysis",
@@ -1619,8 +1619,8 @@ export default function Home() {
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-4xl lg:text-5xl font-bold mb-4 text-white">Ready to Automate Your Success?</h2>
-              <p className="text-xl text-gray-400">
+              <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">Ready to Automate Your Success?</h2>
+              <p className="text-base sm:text-lg md:text-xl text-gray-400">
                 Get started with a free discovery call to explore how automation can transform your business
               </p>
             </div>
@@ -1630,7 +1630,7 @@ export default function Home() {
               <div className="lg:col-span-2">
                 <Card className="glass-card p-8">
                   <CardContent className="p-0">
-                    <h3 className="text-2xl font-bold mb-6 text-white">Start Your Automation Journey</h3>
+                    <h3 className="text-xl sm:text-2xl font-bold mb-6 text-white">Start Your Automation Journey</h3>
                     <Suspense fallback={<div className="h-96 bg-gray-800/50 rounded-lg animate-pulse" />}>
                       <AdvancedContactForm />
                     </Suspense>
@@ -1642,7 +1642,7 @@ export default function Home() {
               <div className="space-y-8">
                 <Card className="glass-card p-8">
                   <CardContent className="p-0">
-                    <h3 className="text-2xl font-bold mb-6 text-white">Why Choose Us?</h3>
+                    <h3 className="text-xl sm:text-2xl font-bold mb-6 text-white">Why Choose Us?</h3>
                     <div className="space-y-4">
                       <div className="flex items-center">
                         <CheckCircle className="w-5 h-5 text-primary mr-3" />
@@ -1666,7 +1666,7 @@ export default function Home() {
 
                 <Card className="glass-card p-8">
                   <CardContent className="p-0">
-                    <h3 className="text-2xl font-bold mb-6 text-white">Contact Information</h3>
+                    <h3 className="text-xl sm:text-2xl font-bold mb-6 text-white">Contact Information</h3>
                     <div className="space-y-6">
                       <div className="flex items-center">
                         <Mail className="w-6 h-6 text-primary mr-4" />

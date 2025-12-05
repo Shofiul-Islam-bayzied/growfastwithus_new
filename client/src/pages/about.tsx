@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import PageHeader from "@/components/PageHeader";
+import Footer from "@/components/Footer";
 import {
   Accordion,
   AccordionItem,
@@ -247,7 +248,7 @@ export default function About() {
           >
             <Badge className="mb-2 sm:mb-4 bg-primary/20 text-primary border-primary/30 text-xs sm:text-sm">
               <Heart className="w-3 h-3 mr-1 sm:mr-2" />
-              Our Story
+              About Us
             </Badge>
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white px-2">
               From Chaos to
@@ -986,6 +987,8 @@ export default function About() {
           </Card>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }

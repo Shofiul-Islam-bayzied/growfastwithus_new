@@ -141,12 +141,12 @@ export default function Booking() {
               <span className="text-xs sm:text-sm font-medium text-gray-300">Book Consultation</span>
             </div>
             
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-3 sm:mb-4 lg:mb-6 px-2">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 sm:mb-4 lg:mb-6 px-2">
               Schedule Your Free
               <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"> Automation Consultation</span>
             </h1>
             
-            <p className="text-base sm:text-lg lg:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed px-4">
+            <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed px-4">
               Get expert guidance on automating your business processes. Our 30-minute consultation is completely free with no obligation.
             </p>
           </motion.div>

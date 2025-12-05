@@ -88,7 +88,7 @@ export default function Templates() {
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">
               Ready-to-Go Automation Templates
             </h1>
-            <p className="text-base sm:text-lg lg:text-xl text-gray-300 max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
               Browse our complete library of proven automation solutions. Each template is designed to solve specific business challenges and deliver immediate results.
             </p>
           </motion.div>
@@ -284,7 +284,7 @@ export default function Templates() {
             transition={{ duration: 0.6, delay: 0.5 }}
             className="text-center mt-16 p-8 rounded-lg bg-gradient-to-r from-primary/20 to-primary/10 border border-primary/30"
           >
-            <h3 className="text-2xl font-bold mb-4">Don't See What You Need?</h3>
+            <h3 className="text-xl sm:text-2xl font-bold mb-4">Don't See What You Need?</h3>
             <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
               We create custom automation solutions tailored to your specific business needs. 
               Let's discuss how we can build the perfect automation for your workflow.

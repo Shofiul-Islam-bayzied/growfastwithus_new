@@ -65,8 +65,8 @@ export default function GDPR() {
                 <Shield className="w-7 h-7 sm:w-8 sm:h-8 text-primary" />
               </div>
             </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 px-4">GDPR Compliance</h1>
-            <p className="text-base sm:text-lg lg:text-xl text-gray-400 px-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4 px-4">GDPR Compliance</h1>
+            <p className="text-base sm:text-lg md:text-xl text-gray-400 px-4">
               Your data protection rights under the General Data Protection Regulation
             </p>
           </motion.div>
@@ -133,7 +133,7 @@ export default function GDPR() {
                 <CardContent className="p-4 sm:p-6 lg:p-8">
                   <div className="flex items-center space-x-3 mb-6">
                     <Shield className="w-6 h-6 text-primary" />
-                    <h2 className="text-2xl font-bold">Legal Basis for Processing</h2>
+                    <h2 className="text-xl sm:text-2xl font-bold">Legal Basis for Processing</h2>
                   </div>
                   <div className="space-y-3 sm:space-y-4 text-gray-300 text-sm sm:text-base leading-relaxed">
                     <p>We process your personal data based on the following legal grounds:</p>
@@ -169,7 +169,7 @@ export default function GDPR() {
                 <CardContent className="p-4 sm:p-6 lg:p-8">
                   <div className="flex items-center space-x-3 mb-6">
                     <Download className="w-6 h-6 text-primary" />
-                    <h2 className="text-2xl font-bold">Data Retention</h2>
+                    <h2 className="text-xl sm:text-2xl font-bold">Data Retention</h2>
                   </div>
                   <div className="space-y-3 sm:space-y-4 text-gray-300 text-sm sm:text-base leading-relaxed">
                     <p>We retain your personal data only as long as necessary for the purposes it was collected:</p>
@@ -194,7 +194,7 @@ export default function GDPR() {
                 <CardContent className="p-4 sm:p-6 lg:p-8">
                   <div className="flex items-center space-x-3 mb-6">
                     <Mail className="w-6 h-6 text-primary" />
-                    <h2 className="text-2xl font-bold">Exercise Your Rights</h2>
+                    <h2 className="text-xl sm:text-2xl font-bold">Exercise Your Rights</h2>
                   </div>
                   <div className="space-y-3 sm:space-y-4 text-gray-300 text-sm sm:text-base leading-relaxed">
                     <p>
@@ -230,7 +230,7 @@ export default function GDPR() {
                 <CardContent className="p-4 sm:p-6 lg:p-8">
                   <div className="flex items-center space-x-3 mb-6">
                     <Shield className="w-6 h-6 text-primary" />
-                    <h2 className="text-2xl font-bold">International Transfers</h2>
+                    <h2 className="text-xl sm:text-2xl font-bold">International Transfers</h2>
                   </div>
                   <div className="space-y-3 sm:space-y-4 text-gray-300 text-sm sm:text-base leading-relaxed">
                     <p>
@@ -260,7 +260,7 @@ export default function GDPR() {
             transition={{ duration: 0.6, delay: 0.7 }}
             className="text-center mt-16 p-8 rounded-lg bg-gradient-to-r from-primary/20 to-primary/10 border border-primary/30"
           >
-            <h3 className="text-2xl font-bold mb-4">Questions About Your Data Rights?</h3>
+            <h3 className="text-xl sm:text-2xl font-bold mb-4">Questions About Your Data Rights?</h3>
             <p className="text-gray-300 mb-6">
               Our Data Protection Officer is available to help you understand and exercise your GDPR rights.
             </p>

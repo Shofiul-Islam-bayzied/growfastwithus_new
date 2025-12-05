@@ -962,7 +962,7 @@ export default function Packages() {
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6">
               Choose Your Automation Package
             </h1>
-            <p className="text-base sm:text-lg lg:text-xl text-gray-300 max-w-3xl mx-auto mb-6 sm:mb-8">
+            <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-6 sm:mb-8">
               From ready-to-deploy templates to fully custom enterprise solutions. Every package includes hosting, monitoring, API management, and ongoing support.
             </p>
             <div className="flex flex-wrap justify-center gap-4 text-sm sm:text-base text-gray-400">
@@ -1049,7 +1049,7 @@ export default function Packages() {
                                 <Badge variant="outline" className="mb-2 text-xs border-gray-700 text-gray-400">
                                   {template.industry}
                                 </Badge>
-                                <h3 className="text-lg sm:text-xl font-bold mb-2">{template.title}</h3>
+                                <h3 className="text-xl sm:text-2xl font-bold mb-2">{template.title}</h3>
                                 <p className="text-sm text-gray-400 mb-4">{template.description}</p>
                               </div>
                             </div>
@@ -1156,7 +1156,7 @@ export default function Packages() {
                             Most Popular
                           </Badge>
                         )}
-                        <h3 className="text-2xl font-bold mb-2">{bundle.name}</h3>
+                        <h3 className="text-xl sm:text-2xl font-bold mb-2">{bundle.name}</h3>
                         <p className="text-sm text-gray-400 mb-6">{bundle.description}</p>
                         
                         <div className="mb-6">
@@ -1254,7 +1254,7 @@ export default function Packages() {
                             Recommended
                           </Badge>
                         )}
-                        <h3 className="text-2xl font-bold mb-2">{solution.name}</h3>
+                        <h3 className="text-xl sm:text-2xl font-bold mb-2">{solution.name}</h3>
                         <p className="text-sm text-gray-400 mb-6">{solution.description}</p>
                         
                         <div className="mb-6">
@@ -1329,10 +1329,10 @@ export default function Packages() {
             transition={{ duration: 0.6 }}
             className="text-center mb-8 sm:mb-12"
           >
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 sm:mb-6">
               Why Choose Our Packages
             </h2>
-            <p className="text-base sm:text-lg lg:text-xl text-gray-400 max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
               Every package includes everything you need for successful automation
             </p>
           </motion.div>
@@ -1394,10 +1394,10 @@ export default function Packages() {
           >
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5" />
             <div className="relative z-10 text-center max-w-3xl mx-auto">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
+              <h2 className="text-3xl sm:text-4xl font-bold mb-4 sm:mb-6">
                 Ready to Get Started?
               </h2>
-              <p className="text-base sm:text-lg lg:text-xl text-gray-300 mb-6 sm:mb-8">
+              <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-6 sm:mb-8">
                 Schedule a free consultation and discover which package is right for your business. We'll help you calculate ROI and choose the perfect solution.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
