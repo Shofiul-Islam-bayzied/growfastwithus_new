@@ -13,6 +13,44 @@ import adminRoutes from './routes/admin';
 import { RBACMiddleware, Permission } from './middleware/rbac';
 import { validateContactInput } from './middleware/security';
 
+// Simple in-memory cache with TTL for performance optimization
+interface CacheEntry<T> {
+  data: T;
+  timestamp: number;
+  ttl: number;
+}
+
+class SimpleCache {
+  private cache: Map<string, CacheEntry<any>> = new Map();
+  
+  set<T>(key: string, data: T, ttl: number = 30000): void {
+    this.cache.set(key, { data, timestamp: Date.now(), ttl });
+  }
+  
+  get<T>(key: string): T | null {
+    const entry = this.cache.get(key);
+    if (!entry) return null;
+    
+    const age = Date.now() - entry.timestamp;
+    if (age > entry.ttl) {
+      this.cache.delete(key);
+      return null;
+    }
+    
+    return entry.data as T;
+  }
+  
+  invalidate(key: string): void {
+    this.cache.delete(key);
+  }
+  
+  clear(): void {
+    this.cache.clear();
+  }
+}
+
+const apiCache = new SimpleCache();
+
 // Extend session interface
 declare module 'express-session' {
   interface SessionData {
@@ -850,6 +888,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { insertTrackingCodeSchema } = await import("@shared/schema");
       const trackingCodeData = insertTrackingCodeSchema.parse(req.body);
       const trackingCode = await storage.createTrackingCode(trackingCodeData);
+      
+      // Invalidate cache when tracking code is created
+      apiCache.invalidate('tracking-codes-active');
+      
       res.json(trackingCode);
     } catch (error) {
       console.error("Error creating tracking code:", error);
@@ -865,6 +907,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const id = parseInt(req.params.id);
       const trackingCode = await storage.updateTrackingCode(id, req.body);
+      
+      // Invalidate cache when tracking code is updated
+      apiCache.invalidate('tracking-codes-active');
+      
       res.json(trackingCode);
     } catch (error) {
       console.error("Error updating tracking code:", error);
@@ -876,6 +922,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const id = parseInt(req.params.id);
       await storage.deleteTrackingCode(id);
+      
+      // Invalidate cache when tracking code is deleted
+      apiCache.invalidate('tracking-codes-active');
+      
       res.json({ success: true });
     } catch (error) {
       console.error("Error deleting tracking code:", error);
@@ -885,7 +935,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/tracking-codes/active", async (req, res) => {
     try {
+      // Check cache first (cache for 30 seconds)
+      const cacheKey = 'tracking-codes-active';
+      const cached = apiCache.get(cacheKey);
+      if (cached !== null) {
+        return res.json(cached);
+      }
+      
+      // Fetch from database if not cached
       const trackingCodes = await storage.getActiveTrackingCodes();
+      
+      // Cache the result
+      apiCache.set(cacheKey, trackingCodes, 30000); // 30 seconds TTL
+      
       res.json(trackingCodes);
     } catch (error) {
       console.error("Error fetching active tracking codes:", error);
@@ -897,13 +959,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Public WordPress API URL endpoint (no auth required for reading API URL only)
   app.get("/api/wordpress/config", async (req, res) => {
     try {
+      // Check cache first (cache for 60 seconds - config changes rarely)
+      const cacheKey = 'wordpress-config';
+      const cached = apiCache.get(cacheKey);
+      if (cached !== null) {
+        return res.json(cached);
+      }
+      
+      // Fetch from database if not cached
       const settings = await storage.getWordPressSettings();
-      // Only return public configuration, no credentials
-      res.json({
+      const config = {
         apiUrl: settings.apiUrl,
         postsPerPage: settings.postsPerPage,
         cacheEnabled: settings.cacheEnabled,
-      });
+      };
+      
+      // Cache the result
+      apiCache.set(cacheKey, config, 60000); // 60 seconds TTL
+      
+      res.json(config);
     } catch (error) {
       console.error("Error fetching WordPress config:", error);
       res.json({

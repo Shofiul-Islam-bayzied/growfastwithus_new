@@ -15,10 +15,13 @@ if (!process.env.DATABASE_URL) {
   // Create connection pool for PostgreSQL
   pool = new Pool({ 
     connectionString: process.env.DATABASE_URL,
-    // Connection pool settings
+    // Connection pool settings - OPTIMIZED FOR PERFORMANCE
     max: 20, // Maximum number of clients in the pool
-    idleTimeoutMillis: 30000, // How long a client is allowed to remain idle before being closed
-    connectionTimeoutMillis: 5000, // How long to wait when connecting a new client
+    min: 2, // Keep minimum 2 connections alive for faster response
+    idleTimeoutMillis: 60000, // Increased: Keep connections alive longer (60s)
+    connectionTimeoutMillis: 10000, // Increased: Allow more time to connect (10s)
+    allowExitOnIdle: false, // Prevent pool from closing on idle
+    statement_timeout: 5000, // Prevent queries from hanging forever
   });
   
   db = drizzle(pool, { schema });
