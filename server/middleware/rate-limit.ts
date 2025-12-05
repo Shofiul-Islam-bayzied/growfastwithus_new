@@ -85,3 +85,22 @@ export const strictRateLimiter = createRateLimiter({
   message: 'Too many requests. Please slow down.',
 });
 
+// Production-specific rate limiters (more restrictive)
+export const productionAuthRateLimiter = createRateLimiter({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 3, // 3 login attempts per 15 minutes (more restrictive in production)
+  message: 'Too many login attempts. Account temporarily locked for security.',
+});
+
+export const productionContactFormRateLimiter = createRateLimiter({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 3, // 3 contact form submissions per hour
+  message: 'Too many contact form submissions. Please try again later.',
+});
+
+export const productionApiRateLimiter = createRateLimiter({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 100, // 100 requests per minute in production
+  message: 'API rate limit exceeded. Please slow down your requests.',
+});
+

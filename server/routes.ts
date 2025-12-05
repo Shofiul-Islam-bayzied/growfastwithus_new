@@ -12,6 +12,7 @@ import authRoutes from './routes/auth';
 import adminRoutes from './routes/admin';
 import { RBACMiddleware, Permission } from './middleware/rbac';
 import { validateContactInput } from './middleware/security';
+import { productionContactFormRateLimiter, productionApiRateLimiter } from './middleware/rate-limit';
 
 // Simple in-memory cache with TTL for performance optimization
 interface CacheEntry<T> {
@@ -122,8 +123,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Add admin management routes
   app.use('/api/admin', adminRoutes);
   
+  // Production rate limiting for contact form
+  const isProduction = process.env.NODE_ENV === 'production';
+  const contactFormMiddleware = isProduction 
+    ? [productionContactFormRateLimiter, validateContactInput]
+    : [validateContactInput];
+  
   // Send contact email notification
-  app.post("/api/send-contact-email", validateContactInput, async (req, res) => {
+  app.post("/api/send-contact-email", ...contactFormMiddleware, async (req, res) => {
     try {
       const contactData = req.body;
       
@@ -1157,8 +1164,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Health check endpoint for Docker
-  app.get('/api/health', (req, res) => {
-    res.status(200).json({ status: 'healthy', timestamp: new Date().toISOString() });
+  // Enhanced health check endpoint for production monitoring
+  app.get('/api/health', async (req, res) => {
+    try {
+      const health: any = {
+        status: 'healthy',
+        timestamp: new Date().toISOString(),
+        uptime: process.uptime(),
+        environment: process.env.NODE_ENV || 'development',
+      };
+
+      // Check database connection
+      try {
+        await storage.getActiveTrackingCodes();
+        health.database = 'connected';
+      } catch (error) {
+        health.database = 'disconnected';
+        health.status = 'degraded';
+      }
+
+      // Memory usage
+      const memUsage = process.memoryUsage();
+      health.memory = {
+        heapUsed: `${Math.round(memUsage.heapUsed / 1024 / 1024)}MB`,
+        heapTotal: `${Math.round(memUsage.heapTotal / 1024 / 1024)}MB`,
+        rss: `${Math.round(memUsage.rss / 1024 / 1024)}MB`,
+      };
+
+      const statusCode = health.status === 'healthy' ? 200 : 503;
+      res.status(statusCode).json(health);
+    } catch (error) {
+      res.status(503).json({ 
+        status: 'unhealthy', 
+        timestamp: new Date().toISOString(),
+        error: 'Health check failed'
+      });
+    }
   });
 
   // Register admin

@@ -37,6 +37,10 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=5000
 
+# Security: Don't run as root
+# Performance: Set optimal memory settings
+ENV NODE_OPTIONS="--max-old-space-size=2048"
+
 # Debug environment variables
 RUN echo "Building with NODE_ENV=$NODE_ENV and PORT=$PORT"
 

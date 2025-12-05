@@ -30,10 +30,12 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
-    minify: "esbuild",
-    sourcemap: false,
+    minify: "esbuild", // Fast minification with esbuild
+    sourcemap: false, // Disable sourcemaps in production for security and size
     cssMinify: true,
     target: 'es2020', // Better browser compatibility
+    reportCompressedSize: false, // Faster builds in production
+    // Performance optimizations
     rollupOptions: {
       output: {
         manualChunks: {

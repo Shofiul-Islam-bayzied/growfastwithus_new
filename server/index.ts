@@ -1,6 +1,7 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import session from 'express-session';
+import compression from 'compression';
 import { setupSecurityMiddleware } from "./middleware/security";
 import { validateAndExitIfInvalid } from "./utils/env-validation";
 import { logger } from "./utils/logger";
@@ -9,6 +10,24 @@ import { logger } from "./utils/logger";
 validateAndExitIfInvalid();
 
 const app = express();
+
+// Enable compression for production performance (gzip/deflate)
+// This should come BEFORE other middleware to compress responses
+app.use(compression({
+  // Only compress responses larger than 1KB
+  threshold: 1024,
+  // Compression level (0-9, higher = better compression but slower)
+  level: 6,
+  // Filter function to determine what to compress
+  filter: (req, res) => {
+    // Don't compress if request includes 'x-no-compression' header
+    if (req.headers['x-no-compression']) {
+      return false;
+    }
+    // Use compression filter default
+    return compression.filter(req, res);
+  }
+}));
 
 // Setup security middleware FIRST (before CORS to maintain compatibility)
 setupSecurityMiddleware(app);

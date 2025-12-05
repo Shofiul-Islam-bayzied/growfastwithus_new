@@ -9,11 +9,13 @@
     "start": "node dist/index.js",
     "start:env": "dotenv -e .env -- node dist/index.js",
     "check": "tsc",
+    "check:production": "node scripts/check-production-readiness.js",
     "db:push": "drizzle-kit push",
     "generate-favicons": "node scripts/generate-favicons.js",
     "easypanel:deploy": "chmod +x easypanel-deploy.sh && ./easypanel-deploy.sh",
     "easypanel:setup": "npm run db:push && npm run easypanel:deploy",
-    "postinstall": "npm run build"
+    "postinstall": "npm run build",
+    "prebuild": "npm run check:production || true"
   },
   "dependencies": {
     "@calcom/embed-react": "^1.5.3",
@@ -51,6 +53,7 @@
     "@replit/vite-plugin-cartographer": "^0.2.7",
     "@replit/vite-plugin-runtime-error-modal": "^0.0.3",
     "@tanstack/react-query": "^5.60.5",
+    "@types/compression": "^1.8.1",
     "@types/memoizee": "^0.4.12",
     "@types/three": "^0.177.0",
     "@vitejs/plugin-react": "^4.3.2",
@@ -58,6 +61,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
+    "compression": "^1.8.1",
     "connect-pg-simple": "^10.0.0",
     "date-fns": "^3.6.0",
     "drizzle-kit": "^0.30.4",
