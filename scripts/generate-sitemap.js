@@ -22,6 +22,7 @@ const staticPages = [
   { url: '/templates', priority: '0.9', changefreq: 'weekly' },
   { url: '/packages', priority: '0.9', changefreq: 'weekly' },
   { url: '/services', priority: '0.8', changefreq: 'monthly' },
+  { url: '/about', priority: '0.8', changefreq: 'monthly' },
   { url: '/booking', priority: '0.8', changefreq: 'monthly' },
   { url: '/blog', priority: '0.9', changefreq: 'daily' },
   { url: '/privacy-policy', priority: '0.5', changefreq: 'yearly' },

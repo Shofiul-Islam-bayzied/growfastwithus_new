@@ -4,61 +4,67 @@
   <!-- Main Pages -->
   <url>
     <loc>https://growfastwithus.com/</loc>
-    <lastmod>2025-12-03</lastmod>
+    <lastmod>2025-12-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://growfastwithus.com/templates</loc>
-    <lastmod>2025-12-03</lastmod>
+    <lastmod>2025-12-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://growfastwithus.com/packages</loc>
-    <lastmod>2025-12-03</lastmod>
+    <lastmod>2025-12-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://growfastwithus.com/services</loc>
-    <lastmod>2025-12-03</lastmod>
+    <lastmod>2025-12-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://growfastwithus.com/about</loc>
+    <lastmod>2025-12-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://growfastwithus.com/booking</loc>
-    <lastmod>2025-12-03</lastmod>
+    <lastmod>2025-12-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://growfastwithus.com/blog</loc>
-    <lastmod>2025-12-03</lastmod>
+    <lastmod>2025-12-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://growfastwithus.com/privacy-policy</loc>
-    <lastmod>2025-12-03</lastmod>
+    <lastmod>2025-12-05</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://growfastwithus.com/terms-of-service</loc>
-    <lastmod>2025-12-03</lastmod>
+    <lastmod>2025-12-05</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://growfastwithus.com/gdpr</loc>
-    <lastmod>2025-12-03</lastmod>
+    <lastmod>2025-12-05</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://growfastwithus.com/llm.txt</loc>
-    <lastmod>2025-12-03</lastmod>
+    <lastmod>2025-12-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -66,91 +72,91 @@
   <!-- Template Pages -->
   <url>
     <loc>https://growfastwithus.com/template/ai-medical-practice</loc>
-    <lastmod>2025-12-03</lastmod>
+    <lastmod>2025-12-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://growfastwithus.com/template/real-estate-sales-marketing</loc>
-    <lastmod>2025-12-03</lastmod>
+    <lastmod>2025-12-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://growfastwithus.com/template/ecommerce-order-inventory</loc>
-    <lastmod>2025-12-03</lastmod>
+    <lastmod>2025-12-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://growfastwithus.com/template/customer-support-automation</loc>
-    <lastmod>2025-12-03</lastmod>
+    <lastmod>2025-12-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://growfastwithus.com/template/ai-voice-call-assistant</loc>
-    <lastmod>2025-12-03</lastmod>
+    <lastmod>2025-12-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://growfastwithus.com/template/whatsapp-business-automation</loc>
-    <lastmod>2025-12-03</lastmod>
+    <lastmod>2025-12-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://growfastwithus.com/template/social-media-scheduler-analytics</loc>
-    <lastmod>2025-12-03</lastmod>
+    <lastmod>2025-12-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://growfastwithus.com/template/email-marketing-automation</loc>
-    <lastmod>2025-12-03</lastmod>
+    <lastmod>2025-12-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://growfastwithus.com/template/hr-recruitment-automation</loc>
-    <lastmod>2025-12-03</lastmod>
+    <lastmod>2025-12-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://growfastwithus.com/template/restaurant-hospitality-management</loc>
-    <lastmod>2025-12-03</lastmod>
+    <lastmod>2025-12-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://growfastwithus.com/template/financial-services-automation</loc>
-    <lastmod>2025-12-03</lastmod>
+    <lastmod>2025-12-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://growfastwithus.com/template/legal-practice-management</loc>
-    <lastmod>2025-12-03</lastmod>
+    <lastmod>2025-12-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://growfastwithus.com/template/educational-institution-management</loc>
-    <lastmod>2025-12-03</lastmod>
+    <lastmod>2025-12-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://growfastwithus.com/template/fitness-wellness-business-management</loc>
-    <lastmod>2025-12-03</lastmod>
+    <lastmod>2025-12-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://growfastwithus.com/template/manufacturing-supply-chain-management</loc>
-    <lastmod>2025-12-03</lastmod>
+    <lastmod>2025-12-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

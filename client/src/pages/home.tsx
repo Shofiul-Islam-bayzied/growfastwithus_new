@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { BookingWidget, BookingButton } from "@/components/BookingWidget";
 import { CurrencySelector } from "@/components/CurrencySelector";
 
@@ -160,6 +161,8 @@ export default function Home() {
   const [showStickyCTA, setShowStickyCTA] = useState(false);
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [voiceAIOpen, setVoiceAIOpen] = useState(false);
+  const [openFAQs, setOpenFAQs] = useState<number[]>([0]); // First FAQ open by default
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
@@ -215,6 +218,41 @@ export default function Home() {
     ? templates 
     : templates.filter(t => t.category === selectedCategory);
 
+  const faqs = [
+    {
+      question: "How long does it take to set up automation?",
+      answer: "Most automations are completed within 1-2 weeks. Simple workflows can be ready in 2-3 days, while complex multi-system integrations may take up to 4 weeks."
+    },
+    {
+      question: "What if I don't have technical knowledge?",
+      answer: "No technical knowledge required! We handle everything from setup to maintenance. We also provide training so your team can understand and use the automations effectively."
+    },
+    {
+      question: "Can you integrate with our existing tools?",
+      answer: "Yes! We work with 5000+ popular business tools including CRMs, email platforms, accounting software, project management tools, and custom APIs."
+    },
+    {
+      question: "What's included in ongoing support?",
+      answer: "24/7 monitoring, bug fixes, performance optimization, and updates when your connected tools change. Plus monthly check-ins to identify new automation opportunities."
+    },
+    {
+      question: "How do you ensure data security?",
+      answer: "We follow enterprise-grade security practices including encrypted connections, minimal data access, regular security audits, and GDPR compliance for all automations."
+    },
+    {
+      question: "What's your refund policy?",
+      answer: "30-day money-back guarantee if you're not satisfied with the initial automation setup. Ongoing monthly fees can be cancelled anytime with 30 days notice."
+    }
+  ];
+
+  const toggleFAQ = (index: number) => {
+    setOpenFAQs(prev => 
+      prev.includes(index) 
+        ? prev.filter(i => i !== index)
+        : [...prev, index]
+    );
+  };
+
   const businessSizes = [
     "Small Business (1-10 employees)",
     "Medium Business (11-50 employees)", 
@@ -242,21 +280,24 @@ export default function Home() {
   };
 
   const calculatePricing = () => {
+    // Base setup fees in EUR based on business size
     const baseSetup = businessSize.includes("Small") ? 2499 : 
                      businessSize.includes("Medium") ? 4999 :
                      businessSize.includes("Large") ? 7499 : 9999;
     
+    // Calculate template monthly costs (EUR)
     const templateCosts = selectedTemplates.reduce((total, templateId) => {
       const template = templates.find(t => t.id === templateId);
       return total + (template ? template.tiers[0].monthlyFee : 0);
     }, 0);
 
+    // Calculate template setup costs (EUR)
     const templateSetupCosts = selectedTemplates.reduce((total, templateId) => {
       const template = templates.find(t => t.id === templateId);
       return total + (template ? template.tiers[0].setupFee : 0);
     }, 0);
 
-    // Voice AI addon costs
+    // Calculate Voice AI addon costs (EUR)
     const voiceAddonMonthlyCosts = selectedVoiceAddons.reduce((total, addonId) => {
       const addon = voiceAIAddons.find(a => a.id === addonId);
       return total + (addon ? addon.monthlyPrice : 0);
@@ -267,18 +308,25 @@ export default function Home() {
       return total + (addon ? addon.setupFee : 0);
     }, 0);
     
+    // Total monthly fee in EUR: €299 base + €150 per pain point + templates + voice AI
     const baseMonthlyEUR = painPoints.length * 150 + 299 + templateCosts + voiceAddonMonthlyCosts;
     const totalSetupEUR = baseSetup + templateSetupCosts + voiceAddonSetupCosts;
     
-    // Convert to selected currency
+    // Convert from EUR to selected currency
     const monthlyFee = convertPrice(baseMonthlyEUR, 'EUR', selectedCurrency.code);
     const setupFee = convertPrice(totalSetupEUR, 'EUR', selectedCurrency.code);
     
-    const timeSavings = timeSpent[0] * 4; // 4 weeks per month
-    const costSavings = timeSavings * 40 * selectedCurrency.rate; // Adjusted for currency
+    // Calculate time and cost savings
+    const timeSavings = timeSpent[0] * 4; // Hours saved per month (weekly hours * 4 weeks)
     
-    // Calculate ROI with proper error handling
-    const totalInvestment = setupFee + monthlyFee * 12;
+    // Cost savings calculation:
+    // Base hourly rate is £40 GBP, converted to selected currency
+    // Example: For USD (rate 1.27): £40 * 1.27 = $50.80/hour
+    const hourlyRateInCurrency = 40 * selectedCurrency.rate;
+    const costSavings = timeSavings * hourlyRateInCurrency;
+    
+    // Calculate ROI over 12 months
+    const totalInvestment = setupFee + (monthlyFee * 12);
     const totalSavings = costSavings * 12;
     
     let roi = 0;
@@ -286,10 +334,14 @@ export default function Home() {
       roi = ((totalSavings - totalInvestment) / totalInvestment) * 100;
     }
     
-    // Calculate break-even months
+    // Calculate break-even point in months
     let breakEven = 0;
-    if (costSavings > 0) {
-      breakEven = Math.ceil(totalInvestment / costSavings);
+    if (costSavings > monthlyFee) {
+      // How many months until monthly savings cover the total investment
+      breakEven = Math.ceil(totalInvestment / (costSavings - monthlyFee));
+    } else {
+      // If monthly savings don't exceed monthly costs, break-even is not achievable
+      breakEven = 999; // Display as not achievable
     }
     
     return {
@@ -298,7 +350,7 @@ export default function Home() {
       timeSaved: timeSavings,
       costSavings,
       roi: Math.round(roi),
-      breakEven: breakEven,
+      breakEven: breakEven < 999 ? breakEven : 0,
     };
   };
 
@@ -816,7 +868,54 @@ export default function Home() {
             <p className="text-base sm:text-lg lg:text-xl text-gray-400">We integrate with the platforms you already use</p>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 sm:gap-6 max-w-6xl mx-auto">
+          {/* Mobile Marquee */}
+          <div className="md:hidden overflow-hidden relative">
+            <style dangerouslySetInnerHTML={{ __html: `
+              @keyframes marquee {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-50%); }
+              }
+              .marquee-animate {
+                animation: marquee 20s linear infinite;
+              }
+              .marquee-animate:hover {
+                animation-play-state: paused;
+              }
+            `}} />
+            <div className="flex marquee-animate">
+              {[...Array(2)].map((_, setIndex) => (
+                <div key={setIndex} className="flex gap-6 px-3">
+                  {[
+                    { name: "n8n", icon: SiN8N },
+                    { name: "Zapier", icon: SiZapier },
+                    { name: "Make", icon: SiMake },
+                    { name: "Slack", icon: SiSlack },
+                    { name: "HubSpot", icon: SiHubspot },
+                    { name: "Shopify", icon: SiShopify },
+                    { name: "Gmail", icon: SiGmail },
+                    { name: "Trello", icon: SiTrello }
+                  ].map((tech, index) => (
+                    <div
+                      key={`${setIndex}-${tech.name}`}
+                      className="flex-shrink-0 group"
+                    >
+                      <Card className="glass-card p-4 hover:border-primary/30 transition-all duration-300 w-20 h-20 flex items-center justify-center">
+                        <CardContent className="p-0 text-center flex flex-col items-center justify-center">
+                          <div className="w-6 h-6 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors mb-1">
+                            <tech.icon className="w-5 h-5 text-gray-400 group-hover:text-primary transition-colors" />
+                          </div>
+                          <p className="text-[9px] font-medium text-gray-300 group-hover:text-white transition-colors whitespace-nowrap">{tech.name}</p>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Desktop Grid */}
+          <div className="hidden md:grid grid-cols-4 lg:grid-cols-8 gap-4 sm:gap-6 max-w-6xl mx-auto">
             {[
               { name: "n8n", icon: SiN8N },
               { name: "Zapier", icon: SiZapier },
@@ -900,7 +999,118 @@ export default function Home() {
           </motion.div>
           
           {/* Testimonials */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Mobile Slider */}
+          <div className="md:hidden">
+            <div className="relative overflow-hidden">
+              <style dangerouslySetInnerHTML={{ __html: `
+                .testimonial-slider {
+                  display: flex;
+                  transition: transform 0.5s ease-in-out;
+                  scroll-snap-type: x mandatory;
+                  overflow-x: auto;
+                  scrollbar-width: none;
+                  -ms-overflow-style: none;
+                }
+                .testimonial-slider::-webkit-scrollbar {
+                  display: none;
+                }
+                .testimonial-slide {
+                  flex: 0 0 100%;
+                  scroll-snap-align: start;
+                  padding: 0 4px;
+                }
+              `}} />
+              <div 
+                ref={(el) => {
+                  if (el && !el.dataset.initialized) {
+                    el.dataset.initialized = 'true';
+                    let startX = 0;
+                    let scrollLeft = 0;
+                    let isDown = false;
+
+                    el.addEventListener('touchstart', (e) => {
+                      isDown = true;
+                      startX = e.touches[0].pageX - el.offsetLeft;
+                      scrollLeft = el.scrollLeft;
+                    });
+
+                    el.addEventListener('touchmove', (e) => {
+                      if (!isDown) return;
+                      e.preventDefault();
+                      const x = e.touches[0].pageX - el.offsetLeft;
+                      const walk = (x - startX) * 2;
+                      el.scrollLeft = scrollLeft - walk;
+                    });
+
+                    el.addEventListener('touchend', () => {
+                      isDown = false;
+                    });
+
+                    // Auto advance every 5 seconds
+                    setInterval(() => {
+                      const slideWidth = el.offsetWidth;
+                      const maxScroll = el.scrollWidth - el.offsetWidth;
+                      if (el.scrollLeft >= maxScroll - 10) {
+                        el.scrollTo({ left: 0, behavior: 'smooth' });
+                      } else {
+                        el.scrollBy({ left: slideWidth, behavior: 'smooth' });
+                      }
+                    }, 5000);
+                  }
+                }}
+                className="testimonial-slider"
+              >
+                {[
+                  {
+                    quote: "GrowFastWithUs transformed our workflow completely. We went from 20 hours of manual work per week to just 2 hours.",
+                    author: "Sarah Johnson",
+                    title: "CEO, TechStart Solutions",
+                    rating: 5
+                  },
+                  {
+                    quote: "The ROI was incredible. We saved £15,000 in the first year alone and our team can focus on strategic work now.",
+                    author: "Michael Chen",
+                    title: "Operations Director, ScaleUp Ltd",
+                    rating: 5
+                  },
+                  {
+                    quote: "Professional, reliable, and results-driven. The automation they built has been running flawlessly for 8 months.",
+                    author: "Emma Rodriguez",
+                    title: "Founder, Digital Agency Pro",
+                    rating: 5
+                  }
+                ].map((testimonial, index) => (
+                  <div key={index} className="testimonial-slide">
+                    <Card className="service-card h-full">
+                      <CardContent className="p-6 relative z-10">
+                        <div className="flex mb-3">
+                          {[...Array(testimonial.rating)].map((_, i) => (
+                            <Star key={i} className="w-4 h-4 text-primary fill-current" />
+                          ))}
+                        </div>
+                        <Quote className="w-7 h-7 text-primary/30 mb-3" />
+                        <p className="text-gray-300 mb-5 leading-relaxed text-sm">"{testimonial.quote}"</p>
+                        <div>
+                          <div className="font-semibold text-white text-sm">{testimonial.author}</div>
+                          <div className="text-xs text-gray-400">{testimonial.title}</div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                ))}
+              </div>
+              
+              {/* Slider Indicators */}
+              <div className="flex justify-center gap-2 mt-6">
+                {[0, 1, 2].map((i) => (
+                  <div key={i} className="w-2 h-2 rounded-full bg-gray-600" />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Desktop Grid */}
+          <div className="hidden md:grid grid-cols-3 gap-8">
             {[
               {
                 quote: "GrowFastWithUs transformed our workflow completely. We went from 20 hours of manual work per week to just 2 hours.",
@@ -949,22 +1159,22 @@ export default function Home() {
           {/* Trust Badges */}
           <div className="mt-16 text-center">
             <p className="text-gray-400 mb-8">Trusted & Secure</p>
-            <div className="flex flex-wrap justify-center items-center gap-8">
-              <div className="flex items-center gap-2 text-gray-400">
-                <Shield className="w-5 h-5 text-primary" />
-                <span>SSL Secured</span>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 lg:gap-8 max-w-4xl mx-auto px-4">
+              <div className="flex items-center justify-center gap-2 text-gray-400 min-w-0">
+                <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
+                <span className="text-xs sm:text-sm whitespace-nowrap overflow-hidden text-ellipsis">SSL Secured</span>
               </div>
-              <div className="flex items-center gap-2 text-gray-400">
-                <CheckCircle className="w-5 h-5 text-primary" />
-                <span>GDPR Compliant</span>
+              <div className="flex items-center justify-center gap-2 text-gray-400 min-w-0">
+                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
+                <span className="text-xs sm:text-sm whitespace-nowrap overflow-hidden text-ellipsis">GDPR Compliant</span>
               </div>
-              <div className="flex items-center gap-2 text-gray-400">
-                <Award className="w-5 h-5 text-primary" />
-                <span>Certified Partners</span>
+              <div className="flex items-center justify-center gap-2 text-gray-400 min-w-0">
+                <Award className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
+                <span className="text-xs sm:text-sm whitespace-nowrap overflow-hidden text-ellipsis">Certified Partners</span>
               </div>
-              <div className="flex items-center gap-2 text-gray-400">
-                <Globe className="w-5 h-5 text-primary" />
-                <span>Global Support</span>
+              <div className="flex items-center justify-center gap-2 text-gray-400 min-w-0">
+                <Globe className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
+                <span className="text-xs sm:text-sm whitespace-nowrap overflow-hidden text-ellipsis">Global Support</span>
               </div>
             </div>
           </div>
@@ -1043,23 +1253,50 @@ export default function Home() {
             <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">Ready-to-Go Templates</h2>
             <p className="text-base sm:text-lg md:text-xl text-gray-400 mb-8">Launch in days, not months</p>
             
-            {/* Template Filter */}
-            <div className="flex flex-wrap justify-center gap-4 mb-8">
-              {categories.map((category) => (
-                <Button
-                  key={category}
-                  variant={selectedCategory === category ? "default" : "outline"}
-                  onClick={() => setSelectedCategory(category)}
-                  className="rounded-full"
-                >
-                  {category}
-                </Button>
-              ))}
+            {/* Template Filter - Horizontal Slider */}
+            <div className="relative mb-8 -mx-6 px-6">
+              <style dangerouslySetInnerHTML={{ __html: `
+                .category-slider {
+                  display: flex;
+                  gap: 1rem;
+                  overflow-x: auto;
+                  scroll-behavior: smooth;
+                  scrollbar-width: thin;
+                  scrollbar-color: rgba(139, 92, 246, 0.3) transparent;
+                  padding-bottom: 0.75rem;
+                  -webkit-overflow-scrolling: touch;
+                }
+                .category-slider::-webkit-scrollbar {
+                  height: 6px;
+                }
+                .category-slider::-webkit-scrollbar-track {
+                  background: transparent;
+                }
+                .category-slider::-webkit-scrollbar-thumb {
+                  background: rgba(139, 92, 246, 0.3);
+                  border-radius: 3px;
+                }
+                .category-slider::-webkit-scrollbar-thumb:hover {
+                  background: rgba(139, 92, 246, 0.5);
+                }
+              `}} />
+              <div className="category-slider">
+                {categories.map((category) => (
+                  <Button
+                    key={category}
+                    variant={selectedCategory === category ? "default" : "outline"}
+                    onClick={() => setSelectedCategory(category)}
+                    className="rounded-full whitespace-nowrap flex-shrink-0"
+                  >
+                    {category}
+                  </Button>
+                ))}
+              </div>
             </div>
           </motion.div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredTemplates.slice(0, 6).map((template, index) => {
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {filteredTemplates.slice(0, 4).map((template, index) => {
               return (
                 <motion.div
                   key={template.id}
@@ -1235,27 +1472,6 @@ export default function Home() {
                       ))}
                     </div>
                   </div>
-
-                  {/* Voice AI Add-ons */}
-                  <div>
-                    <h4 className="font-semibold mb-4 text-white">Voice AI Add-ons (Optional)</h4>
-                    <p className="text-sm text-gray-400 mb-4">
-                      Add inbound & outbound AI voice calling capabilities to your automation
-                    </p>
-                    <div className="grid grid-cols-1 gap-4">
-                      {voiceAIAddons.map((addon) => (
-                        <Suspense key={addon.id} fallback={<div className="h-24 bg-gray-800/50 rounded-lg animate-pulse" />}>
-                          <VoiceAIAddonCard
-                            addon={addon}
-                            currency={selectedCurrency}
-                            isSelected={selectedVoiceAddons.includes(addon.id)}
-                            onToggle={handleVoiceAddonToggle}
-                            className="transition-all hover:shadow-md"
-                          />
-                        </Suspense>
-                      ))}
-                    </div>
-                  </div>
                 </CardContent>
               </Card>
             </motion.div>
@@ -1309,9 +1525,19 @@ export default function Home() {
                           {pricing.roi > 0 ? '+' : ''}{pricing.roi}%
                         </div>
                         <p className="text-sm text-gray-400 mb-4">12-Month ROI</p>
-                        {pricing.roi > 0 && (
+                        {pricing.roi > 0 && pricing.breakEven > 0 && (
                           <p className="text-sm text-green-600">
-                            Break-even in {pricing.breakEven} months
+                            Break-even in {pricing.breakEven} {pricing.breakEven === 1 ? 'month' : 'months'}
+                          </p>
+                        )}
+                        {pricing.roi > 0 && pricing.breakEven === 0 && (
+                          <p className="text-sm text-yellow-600">
+                            Select more time savings for ROI calculation
+                          </p>
+                        )}
+                        {pricing.roi <= 0 && (
+                          <p className="text-sm text-yellow-600">
+                            Increase time savings to see positive ROI
                           </p>
                         )}
                       </div>
@@ -1328,16 +1554,21 @@ export default function Home() {
                         <div className="w-full bg-gray-800 rounded-full h-4 relative overflow-hidden">
                           <div 
                             className="bg-red-500 h-full absolute left-0"
-                            style={{ width: '40%' }}
+                            style={{ 
+                              width: `${Math.min(100, ((pricing.setupFee + pricing.monthlyFee * 12) / (pricing.setupFee + pricing.monthlyFee * 12 + pricing.costSavings * 12)) * 100)}%` 
+                            }}
                           ></div>
                           <div 
                             className="bg-green-500 h-full absolute"
-                            style={{ left: '40%', width: '60%' }}
+                            style={{ 
+                              left: `${Math.min(100, ((pricing.setupFee + pricing.monthlyFee * 12) / (pricing.setupFee + pricing.monthlyFee * 12 + pricing.costSavings * 12)) * 100)}%`,
+                              width: `${Math.min(100, ((pricing.costSavings * 12) / (pricing.setupFee + pricing.monthlyFee * 12 + pricing.costSavings * 12)) * 100)}%`
+                            }}
                           ></div>
                         </div>
                         <div className="flex justify-between text-xs text-gray-400">
-                          <span>£{(pricing.setupFee + pricing.monthlyFee * 12).toLocaleString()}</span>
-                          <span>£{(pricing.costSavings * 12).toLocaleString()}</span>
+                          <span>{formatPrice(pricing.setupFee + pricing.monthlyFee * 12, selectedCurrency.code)}</span>
+                          <span>{formatPrice(pricing.costSavings * 12, selectedCurrency.code)}</span>
                         </div>
                       </div>
                     </div>
@@ -1360,6 +1591,56 @@ export default function Home() {
               </Card>
             </motion.div>
           </div>
+
+          {/* Voice AI Add-ons Accordion */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={pricingInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="mt-8"
+          >
+            <Collapsible open={voiceAIOpen} onOpenChange={setVoiceAIOpen}>
+              <Card className="glass-card overflow-hidden">
+                <CollapsibleTrigger className="w-full">
+                  <div className="flex items-center justify-between p-6 hover:bg-gray-800/30 transition-colors cursor-pointer">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center">
+                        <Phone className="w-5 h-5 text-primary" />
+                      </div>
+                      <div className="text-left">
+                        <h3 className="text-lg font-bold text-white">Voice AI Add-ons (Optional)</h3>
+                        <p className="text-sm text-gray-400">
+                          Add inbound & outbound AI voice calling capabilities
+                        </p>
+                      </div>
+                    </div>
+                    {voiceAIOpen ? (
+                      <ChevronUp className="w-5 h-5 text-gray-400" />
+                    ) : (
+                      <ChevronDown className="w-5 h-5 text-gray-400" />
+                    )}
+                  </div>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <CardContent className="p-6 pt-0 border-t border-gray-800">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                      {voiceAIAddons.map((addon) => (
+                        <Suspense key={addon.id} fallback={<div className="h-32 bg-gray-800/50 rounded-lg animate-pulse" />}>
+                          <VoiceAIAddonCard
+                            addon={addon}
+                            currency={selectedCurrency}
+                            isSelected={selectedVoiceAddons.includes(addon.id)}
+                            onToggle={handleVoiceAddonToggle}
+                            className="transition-all hover:shadow-md"
+                          />
+                        </Suspense>
+                      ))}
+                    </div>
+                  </CardContent>
+                </CollapsibleContent>
+              </Card>
+            </Collapsible>
+          </motion.div>
         </div>
       </section>
 
@@ -1372,47 +1653,33 @@ export default function Home() {
           </div>
           
           <div className="max-w-4xl mx-auto space-y-4">
-            <Card className="service-card">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-white mb-3">How long does it take to set up automation?</h3>
-                <p className="text-gray-400 leading-relaxed">Most automations are completed within 1-2 weeks. Simple workflows can be ready in 2-3 days, while complex multi-system integrations may take up to 4 weeks.</p>
-              </CardContent>
-            </Card>
-            
-            <Card className="service-card">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-white mb-3">What if I don't have technical knowledge?</h3>
-                <p className="text-gray-400 leading-relaxed">No technical knowledge required! We handle everything from setup to maintenance. We also provide training so your team can understand and use the automations effectively.</p>
-              </CardContent>
-            </Card>
-            
-            <Card className="service-card">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-white mb-3">Can you integrate with our existing tools?</h3>
-                <p className="text-gray-400 leading-relaxed">Yes! We work with 5000+ popular business tools including CRMs, email platforms, accounting software, project management tools, and custom APIs.</p>
-              </CardContent>
-            </Card>
-            
-            <Card className="service-card">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-white mb-3">What's included in ongoing support?</h3>
-                <p className="text-gray-400 leading-relaxed">24/7 monitoring, bug fixes, performance optimization, and updates when your connected tools change. Plus monthly check-ins to identify new automation opportunities.</p>
-              </CardContent>
-            </Card>
-            
-            <Card className="service-card">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-white mb-3">How do you ensure data security?</h3>
-                <p className="text-gray-400 leading-relaxed">We follow enterprise-grade security practices including encrypted connections, minimal data access, regular security audits, and GDPR compliance for all automations.</p>
-              </CardContent>
-            </Card>
-            
-            <Card className="service-card">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-white mb-3">What's your refund policy?</h3>
-                <p className="text-gray-400 leading-relaxed">30-day money-back guarantee if you're not satisfied with the initial automation setup. Ongoing monthly fees can be cancelled anytime with 30 days notice.</p>
-              </CardContent>
-            </Card>
+            {faqs.map((faq, index) => (
+              <Collapsible
+                key={index}
+                open={openFAQs.includes(index)}
+                onOpenChange={() => toggleFAQ(index)}
+              >
+                <Card className="service-card overflow-hidden">
+                  <CollapsibleTrigger className="w-full">
+                    <div className="flex items-center justify-between p-6 hover:bg-gray-800/30 transition-colors cursor-pointer">
+                      <h3 className="text-lg font-semibold text-white text-left pr-4">
+                        {faq.question}
+                      </h3>
+                      {openFAQs.includes(index) ? (
+                        <ChevronUp className="w-5 h-5 text-primary flex-shrink-0" />
+                      ) : (
+                        <ChevronDown className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                      )}
+                    </div>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <CardContent className="px-6 pb-6 pt-0">
+                      <p className="text-gray-400 leading-relaxed">{faq.answer}</p>
+                    </CardContent>
+                  </CollapsibleContent>
+                </Card>
+              </Collapsible>
+            ))}
           </div>
         </div>
       </section>
